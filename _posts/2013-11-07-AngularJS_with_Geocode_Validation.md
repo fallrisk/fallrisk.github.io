@@ -33,7 +33,7 @@ Now lets create the validation directive. When I started this task I followed th
 custom validation example at the AngularJS website. The function `numberOfLocations`
 in the geocode service returns a promise. In order to understand `promises` I read
 the article ["Promises Explained as a Cartoon."](http://andyshora.com/promises-angularjs-explained-as-cartoon.html)
-To act on a promise you add code to a function to `then`.
+To act on a promise you add code to a function called by `then`.
 
 {% highlight js %}
 .directive('validLocation', ['GeoCode', function(geoCode) { 
@@ -100,6 +100,6 @@ You can see this pattern being followed in this service.
 });
 {% endhighlight %}
 
-[1] http://andyshora.com/promises-angularjs-explained-as-cartoon.html "Promises Explained as a Cartoon"
-[2] http://liamkaufman.com/blog/2013/09/09/using-angularjs-promises/ "Using AngularJS Promises"
-[3] http://docs.angularjs.org/api/ng.$q "AngularJS $q"
+[promises] http://andyshora.com/promises-angularjs-explained-as-cartoon.html "Promises Explained as a Cartoon"
+[promises2] http://liamkaufman.com/blog/2013/09/09/using-angularjs-promises/ "Using AngularJS Promises"
+[angularjsq] http://docs.angularjs.org/api/ng.$q "AngularJS $q"
