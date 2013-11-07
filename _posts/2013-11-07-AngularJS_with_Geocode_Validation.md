@@ -5,7 +5,8 @@ title: AngularJS with Google Geocode Validation
 
 {{ page.title }}
 ================
-In this article I will explain how I created a location validation directive.
+In this article I will explain how I created a location validation directive. This
+article is an example of how to use promises in directives.
 The directive is written in Javascript for AngularJS. The directive is applied
 to a form input. The directive uses an AngularJS service to communicate with
 Geocode in Google Maps API. The service responds to the directive with a promise.
