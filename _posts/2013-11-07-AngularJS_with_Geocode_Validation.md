@@ -76,9 +76,11 @@ returns a promise. Geocoding is the process of looking up latitude and longitude
 from a string. The Google Geocoding API requires a general location to begin its
 search. In this example the variable `myLatLng` is that location. To create a promise
 follow this easy pattern:
+
 1. Create the deferred.
 2. Call the asynchronous function/long running function. It MUST return deferred.resole and/or deferred.reject.
 3. Return the deferred promise.
+
 You can see this pattern being followed in this service.
 
 {% highlight js %}
@@ -100,6 +102,6 @@ You can see this pattern being followed in this service.
 });
 {% endhighlight %}
 
-[promises] http://andyshora.com/promises-angularjs-explained-as-cartoon.html "Promises Explained as a Cartoon"
-[promises2] http://liamkaufman.com/blog/2013/09/09/using-angularjs-promises/ "Using AngularJS Promises"
-[angularjsq] http://docs.angularjs.org/api/ng.$q "AngularJS $q"
+[promises]: http://andyshora.com/promises-angularjs-explained-as-cartoon.html "Promises Explained as a Cartoon"
+[promises2]: http://liamkaufman.com/blog/2013/09/09/using-angularjs-promises/ "Using AngularJS Promises"
+[angularjsq]: http://docs.angularjs.org/api/ng.$q "AngularJS $q"
