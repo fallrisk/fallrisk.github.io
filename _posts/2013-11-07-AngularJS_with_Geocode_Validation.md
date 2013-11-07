@@ -48,7 +48,6 @@ To act on a promise you add code to a function called by `then`.
         }
         geoCode.numberOfLocations(viewValue)
         .then(function(results) {
-          // console.log('numberOfLocations(viewValue): ' + numberOfLocations(viewValue));
           console.log('results', results);
           if (1 == results) {
             ctrl.$setValidity('validLocation', true);
