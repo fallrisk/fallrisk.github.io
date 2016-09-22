@@ -1,0 +1,40 @@
+/* Style sheet for fallrisk.github.io. */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+body {
+font-family: 'Open Sans', sans-serif;
+font-size: 16pt;
+background-color: white;
+}
+a {
+color: #2C57BA;
+}
+a:visitied {
+color: #7437B2;
+}
+a:hover {
+color: #4B76F8;
+}
+p {
+font-size: 16pt;
+}
+#banner {
+padding-right: 0;
+padding-left: 15px;
+margin-left: auto;
+margin-right: auto;
+clear: both;
+}
+#nav {
+margin-left: 20px;
+font-size: 20px;
+}
+#nav a {
+text-transform: uppercase;
+}
+#website_title {
+font-size: 24pt;
+float: left;
+}
+#algorithm_animation {
+float: right;
+}
