@@ -44,9 +44,17 @@ function startMergeSort (numbers, svg) {
 // The variable eEnd is the elements new destination.
 function animateMoveAndShift(elementIndex, eEnd, svg) {
   var elementBar = svg.selectAll('rect').filter(':nth-child(' + elementIndex + ')')
-  var otherBars = svg.selectAll('rect').filter(':nth-child(n+' + elementIndex + ')')
+  var otherBars = svg.selectAll('rect')
+  	.filter(':nth-child(n+' + elementIndex + ')')
+  	// .filter(':nth-child(-n+' + elementIndex + ')')
   elementBar.transition()
-    .attr('transform','translate(' + (eEnd * barWidth + (eEnd + 1) * margin) + ',' + margin + ')')
+    .attr('transform','translate(' + (eEnd * barWidth + (eEnd + 1) * margin) + ')')
+  otherBars.each(function () {
+  	var bar = d3.select(this)
+  	bar.transition()
+  	.attr('transform','translate(' + bar.attr('x') + barWidth + margin + ')')
+  })
+
 }
 
 function stepMerge (numbers, lo, mid, hi, svg) {
