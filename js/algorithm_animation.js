@@ -132,8 +132,7 @@ function start (options) {
     .range([5, svgHeight])
   var colorScale = d3.scaleLinear()
     .domain([minNumber, maxNumber])
-    .range([5, svgHeight])
-    .interpolate(d3.interpolateRainbow)
+    .range([0, 1])
   for (var i = 0; i < N; i++) {
     var bar = svg.append('rect')
     bar.attr('width', barWidth)
@@ -143,7 +142,7 @@ function start (options) {
     bar.attr('rx', 4)
     bar.attr('ry', 4)
     bar.attr('fill', function () {
-      return '#2C57BA'
+      return d3.interpolateRainbow(colorScale(numbers[i]))
     })
     bar.attr('x', (i * barWidth + (i + 1) * margin))
   }
