@@ -1,9 +1,11 @@
-
-
+// Copyright Justin Watson 2016
+//
 // @file
 // Follows Javscript Style defined at http://standardjs.com/rules.html.
 // And the "revelaing" module pattern from
 // https://toddmotto.com/mastering-the-module-pattern/.
+// https://github.com/d3/d3-scale-chromatic
+//
 
 var MergeSortAnimation = (function () {
 
@@ -17,7 +19,7 @@ var svg = null
 var margin = 1 // Unit: pixels
 var barWidth = (svgWidth - margin * (N + 1)) / N
 var auxArray = []
-var mergeSteps = []
+var mergeSteps = ['update-children']
 
 // Animate the transistion from the what the array looked like before the
 // move to what it looks like now. Only one element makes a large move
@@ -25,7 +27,7 @@ var mergeSteps = []
 //
 // The variable eStart is the element to move.
 // The variable eEnd is the elements new destination.
-function animateMoveAndShift(elementIndex, eEnd, svg) {
+function animateMoveAndShift(elementIndex, eEnd, svg, updateChildren, index) {
   var otherBars = null
 
   if (elementIndex > eEnd) {
@@ -38,26 +40,24 @@ function animateMoveAndShift(elementIndex, eEnd, svg) {
       .filter(':nth-child(-n+' + (eEnd) + ')')
   }
   var elementBar = svg.selectAll('rect').filter(':nth-child(' + (elementIndex + 1) + ')')
-  elementBar.transition().delay(1000)
-    .attr('x', (eEnd * barWidth + (eEnd + 1) * margin))
-    .on('end', function () {
-      var svgNode = svg._groups[0][0]
-      svgNode.insertBefore(svgNode.children[elementIndex], svgNode.children[eEnd])
-    }, elementIndex, eEnd, svg)
-  // var leftOrRight = 1
-  // if (elementIndex > eEnd) {
-  //   leftOrRight = 1
-  // } else {
-  //   leftOrRight = -1
-  // }
-  // otherBars.each(function (d, i) {
-  //  var bar = d3.select(this)
-  //   var x = parseInt(d3.select(this).attr('x'))
-  //  bar.transition()
-  //  .attr('x', leftOrRight * x + barWidth + margin)
-  // })
-    // svgNode.insertBefore(svgNode.children[elementIndex], svgNode.children[eEnd])
-  // }
+  if (updateChildren) {
+    elementBar.transition()
+      .attr('x', (eEnd * barWidth + (eEnd + 1) * margin))
+      .on('end', function () {
+        var moveSet = new Set()
+        for (var i = index; mergeSteps[i] !== 'update-children'; i--) {
+          moveSet.add(mergeSteps[i])
+        }
+        var svgNode = svg._groups[0][0]
+        for (var i = 0; i < moveSet.length; i++) {
+          svgNode.insertBefore(svgNode.children[moveSet[i][0]],
+            svgNode.children[moveSet[i][1]])
+        }
+      })
+  } else {
+    elementBar.transition().delay(1000)
+      .attr('x', (eEnd * barWidth + (eEnd + 1) * margin))
+  }
 }
 
 // Returns an array of count N random numbers.
@@ -97,6 +97,7 @@ function merge (numbers, lo, mid, hi) {
       mergeSteps.push([k, newIndex])
     }
   }
+  mergeSteps.push('update-children')
 }
 
 function sort (numbers, lo, hi) {
@@ -149,7 +150,14 @@ function start (options) {
   sort(numbers, 0, numbers.length - 1, svg)
   // Now we create a bunch of timeout functions that go through the animation.
   for (var i = 0; i < mergeSteps.length; i++) {
-    setTimeout(animateMoveAndShift, i * 200, mergeSteps[i][0], mergeSteps[i][1], svg)
+    if (mergeSteps[i] === 'update-children') {
+      continue
+    }
+    if (mergeSteps[i + 1] === 'update-children') {
+      setTimeout(animateMoveAndShift, i * 200, mergeSteps[i][0], mergeSteps[i][1], svg, true, i)
+    } else {
+      setTimeout(animateMoveAndShift, i * 200, mergeSteps[i][0], mergeSteps[i][1], svg, false, i)
+    }
   }
 }
 
@@ -161,9 +169,9 @@ return {
 
 // This function is called once the document finishes loading.
 $(function () {
-  MergeSortAnimation.start({
-    count: 20,
-    svgId: '#algorithm_animation',
-    width: $(window).width()
-  })
+  // MergeSortAnimation.start({
+  //   count: 5,
+  //   svgId: '#algorithm_animation',
+  //   width: $(window).width()
+  // })
 }) // End onLoad function
