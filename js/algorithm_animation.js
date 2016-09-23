@@ -43,16 +43,19 @@ function startMergeSort (numbers, svg) {
 // The variable eStart is the element to move.
 // The variable eEnd is the elements new destination.
 function animateMoveAndShift(elementIndex, eEnd, svg) {
-  var elementBar = svg.selectAll('rect').filter(':nth-child(' + elementIndex + ')')
   var otherBars = svg.selectAll('rect')
-  	.filter(':nth-child(n+' + elementIndex + ')')
-  	// .filter(':nth-child(-n+' + elementIndex + ')')
+    .filter(':nth-child(n+' + (eEnd + 1) + ')')
+    .filter(':nth-child(-n+' + (elementIndex) + ')')
+  var elementBar = svg.selectAll('rect').filter(':nth-child(' + (elementIndex + 1) + ')')
   elementBar.transition()
-    .attr('transform','translate(' + (eEnd * barWidth + (eEnd + 1) * margin) + ')')
-  otherBars.each(function () {
+    .attr('x', (eEnd * barWidth + (eEnd + 1) * margin))
+
+  var leftOrRight = 1
+  otherBars.each(function (d, i) {
   	var bar = d3.select(this)
-  	bar.transition()
-  	.attr('transform','translate(' + bar.attr('x') + barWidth + margin + ')')
+    var x = parseInt(d3.select(this).attr('x'))
+  	bar.transition().delay(1000)
+  	.attr('x', leftOrRight * x + barWidth + margin)
   })
 
 }
@@ -109,7 +112,8 @@ function startMergeSortAnimation () {
 			return heightScale(numbers[i])
 		})
 		bar.attr('fill', getRandomColor())
-		bar.attr('transform', 'translate(' + (i * barWidth + (i + 1) * margin) + ',' + margin + ')')
+		// bar.attr('transform', 'translate(' + (i * barWidth + (i + 1) * margin) + ',' + margin + ')')
+    bar.attr('x', (i * barWidth + (i + 1) * margin))
 	}
 	//startMergeSort(numbers, svg)
   // Test the animate transition.
