@@ -2,41 +2,43 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans';
 @import 'https://fonts.googleapis.com/css?family=Share+Tech+Mono';
 body {
-font-family: 'Open Sans', sans-serif;
-font-size: 16pt;
-background-color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16pt;
+	background-color: white;
 }
 a {
-color: #2C57BA;
+	color: #2C57BA;
 }
 a:visitied {
-color: #7437B2;
+	color: #7437B2;
 }
 a:hover {
-color: #4B76F8;
+	color: #4B76F8;
 }
 p {
-font-size: 16pt;
+	font-size: 16pt;
 }
 #banner {
-padding-right: 0;
-padding-left: 15px;
-margin-left: auto;
-margin-right: auto;
-clear: both;
+	padding-right: 0;
+	padding-left: 0;
+	margin-left: auto;
+	margin-right: auto;
+	clear: both;
 }
 #nav {
-margin-left: 20px;
-font-size: 20px;
+	margin-left: 20px;
+	font-size: 20px;
 }
 #nav a {
-text-transform: uppercase;
+	text-transform: uppercase;
 }
 #website_title {
-font-size: 24pt;
-float: left;
-font-family: 'Share Tech Mono', monospace;
+	font-size: 24pt;
+	float: left;
+	font-family: 'Share Tech Mono', monospace;
+	padding-left: 15PX;
 }
 #algorithm_animation {
-float: right;
+	float: left;
+	clear: both;
 }
