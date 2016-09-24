@@ -2,8 +2,19 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans';
 @import 'https://fonts.googleapis.com/css?family=Share+Tech+Mono';
 
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
 
 body {
+  position: relative;
   font-family: 'Open Sans', sans-serif;
   font-size: 16pt;
   background-color: white;
@@ -56,6 +67,10 @@ p {
 
 ul.posts li {
 
+}
+
+#content {
+  padding-bottom: 200px;
 }
 
 /* Always at the bottom, but not fixed. */
