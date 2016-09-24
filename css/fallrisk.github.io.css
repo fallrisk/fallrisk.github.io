@@ -1,6 +1,8 @@
 /* Style sheet for fallrisk.github.io. */
 @import 'https://fonts.googleapis.com/css?family=Open+Sans';
 @import 'https://fonts.googleapis.com/css?family=Share+Tech+Mono';
+
+
 body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16pt;
@@ -18,27 +20,35 @@ a:hover {
 p {
 	font-size: 16pt;
 }
+
+
 #banner {
 	padding-right: 0;
 	padding-left: 0;
-	margin-left: auto;
-	margin-right: auto;
-	clear: both;
-}
-#nav {
-	margin-left: 20px;
-	font-size: 20px;
-}
-#nav a {
-	text-transform: uppercase;
+	margin: 0 auto;
+	text-align: center;
 }
 #website_title {
 	font-size: 24pt;
-	float: left;
 	font-family: 'Share Tech Mono', monospace;
-	padding-left: 15PX;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin: 0 auto;
+	display: block;
 }
 #algorithm_animation {
-	float: left;
-	clear: both;
+	margin: 0 auto;
+}
+#about_site p {
+	font-size: 12pt;
+}
+
+
+#nav {
+	margin-left: 20px;
+	font-size: 20px;
+	text-align: center;
+}
+#nav a {
+	text-transform: uppercase;
 }

@@ -4,6 +4,8 @@
 // Follows Javscript Style defined at http://standardjs.com/rules.html.
 // And the "revelaing" module pattern from
 // https://toddmotto.com/mastering-the-module-pattern/.
+//
+// # References
 // https://github.com/d3/d3-scale-chromatic
 // https://bl.ocks.org/mbostock/3808218
 // https://bl.ocks.org/mbostock/3808234
@@ -14,7 +16,7 @@ var MergeSortAnimation = (function () {
 
 // Adjustable Variables, with default values.
 var N = 5
-var svgWidth = 100
+var svgWidth = 800
 // Dependent Variables
 var svgHeight = 100
 var numbers = []
@@ -97,7 +99,7 @@ function start (options) {
   var svgId = options.svgId || '#algorithm_animation'
   svg = d3.select(svgId)
   numbers = Array.from(getRandomArray(N))
-  svgWidth = options.width || 100
+  svgWidth = Math.min(options.width || 100, svgWidth)
   barWidth = (svgWidth - margin * (N + 1)) / N
   // SVG setup.
   svg.attr('width', svgWidth)
