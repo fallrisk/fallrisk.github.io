@@ -1,6 +1,7 @@
 ---
 layout: post
 title: AngularJS with Google Geocode Validation
+comments: true
 ---
 
 {{ page.title }}
@@ -22,7 +23,7 @@ location. The submit box is disabled until the form is valid.
 <form novalidate name="newForm" class="app-form css-form">
   <input type="text" name="fLocation" class="form-control" ng-model="formData.location"
     placeholder="Location" ng-pattern="/^[a-zA-Z, ]*$/" valid-Location required/>
-  <button class="form-control btn btn-success" ng-disabled="newForm.$invalid" 
+  <button class="form-control btn btn-success" ng-disabled="newForm.$invalid"
     ng-click="doSomething(formData)">Submit</button>
   </form>
 </div>
@@ -37,7 +38,7 @@ the article ["Promises Explained as a Cartoon."](http://andyshora.com/promises-a
 To act on a promise you add code to a function called by `then`.
 
 {% highlight js %}
-.directive('validLocation', ['GeoCode', function(geoCode) { 
+.directive('validLocation', ['GeoCode', function(geoCode) {
   return {
     require: 'ngModel',
     link: function(scope, elm, attrs, ctrl) {
@@ -64,7 +65,7 @@ To act on a promise you add code to a function called by `then`.
 {% endhighlight %}
 
 Make sure that if you use camel case to define your directive you don't use camel
-case in your HTML form. As you can see above I have "valid-location", while my 
+case in your HTML form. As you can see above I have "valid-location", while my
 directive is "validLocation." Note they use "unshift" on the $parsers, while I use
 "push." This is to just add it to the list of parsers and leave it up to your ordering
 in the HTML to dictate priority. "Unshift," would always put it at the top.
@@ -85,7 +86,7 @@ You can see this pattern being followed in this service.
 
 {% highlight js %}
 .factory('GeoCode', function($q) {
-  return { 
+  return {
     numberOfLocations: function(address) {
       var geocoder = new google.maps.Geocoder();
       var deferred = $q.defer();
