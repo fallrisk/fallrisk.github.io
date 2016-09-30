@@ -485,10 +485,12 @@ pins 3 and 4 are what we are looking for. At this point we should see our
 program output on our serial device. That would confirm we added the Atmel SAM4S
 Xplained as a board to the Zephyr OS.
 
+{::comment}
 ## Code
 
 To view all the code changes that we made in this article go view this a diff.
 here.
+{:/}
 
 {::comment}Abbreviations{:/}
 
