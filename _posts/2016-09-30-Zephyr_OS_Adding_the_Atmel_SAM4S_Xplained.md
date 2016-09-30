@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Zephyr OS: Adding the Atmel SAM4S Xplained
+title: Zephyr OS Adding the Atmel SAM4S Xplained
 comments: true
 ---
 
