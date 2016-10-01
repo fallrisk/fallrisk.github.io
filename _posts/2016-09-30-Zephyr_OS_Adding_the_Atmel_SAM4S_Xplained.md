@@ -369,9 +369,21 @@ same register addresses for the systick. So we will leave this for now unless
 there is an error the first time we try to bring the board up.
 
 Next setting we will look at is CONFIG\_CONSOLE. The Kconfig item CONSOLE is
-used and defined in <z/drivers/console/Kconfig>. The config option CONSOLE
-allows us to select CONSOLE\_UART\_CONSOLE in the kernel configuration system.
-It doesn't do anything else.
+used and defined in the file <z/drivers/console/Kconfig>. The config option
+CONSOLE allows us to select CONSOLE\_UART\_CONSOLE in the kernel configuration
+system. It doesn't do anything else. Looking at the other settings in this file
+we see the option UART\_CONSOLE\_ON\_DEV\_NAME. It is currently set to
+"UART\_0". We need to change this to "UART\_1" because our available UART is the
+second UART with the label UART1 in the data sheet. So lets add this line to our
+"atmel\_sam4s\_xpld\_defconfig" file with the value "UART_1". 
+
+```ini
+CONFIG_UART_CONSOLE_ON_DEV_NAME="UART_1"
+```
+
+In a later paragraph we will see that we will be updating the serial driver for
+our board and SoC to match the value of the CONFIG\_UART\_CONSOLE\_ON\_DEV\_NAME
+variable.
 
 Let's take a look at CONFIG\_UART\_CONSOLE. Searching for CONFIG\_UART\_CONSOLE
 shows that it is used in the file <z/drivers/console/Makefile>. It adds the
@@ -390,7 +402,10 @@ that say SAM3 to SAM4. Also review section 35, UART of the SAM4 data sheet.
 Update the "help" block on the menuconfig "UART\_ATMEL\_SAM4". We now have 2
 UARTs. Both UARTs only have Tx and Rx pins, no flow control capabilities. Also
 note the UART\_ATMEL\_SAM4\_CLK\_FREQ config option. We set this in
-<z/arch/arm/soc/ Kconfig.defconfig>
+<z/arch/arm/soc/Kconfig.defconfig>. We also need to update the variable
+UART\_ATMEL\_SAM4\_NAME to match what we set for the config option
+CONFIG\_UART\_CONSOLE\_ON\_DEV\_NAME. The value should be "UART\_1" instead of
+"UART\_0".
 
 Now we will look at the file "uart\_atmel\_sam3.c." We need to make a copy of
 the file "uart\_atmel\_sam3.c" and call it "uart\_atmel\_sam4.c." Rename
@@ -398,13 +413,17 @@ everything that is "SAM3" to "SAM4." Recall that in
 <z/arch/arm/soc/atmel\_sam4/soc.h> we updated our UART\_ADDR variable. We made
 a definition for UART0 and UART1 and set the appropriate address. Find the
 UART\_ADDR in the uart\_atmel\_sam4.c file and update it to UART1\_ADDR. UART1
-are the available UART pins on the J1 header of the board. Looking at the rest
-of the file: I think that is all we need to change. Look at the `struct _uart`.
-There are many differences between the SAM3 and SAM4 UART register map. The
-map can be found on Table 36-15. Change the structure to match the SAM4.
+are the available UART pins on the J1 header of the board. We need to update
+parts of the function "uart\_sam4\_init". We need to change the PMC so that
+UART1 clock is enabled. We also need to make sure the PIO is disabled for our
+UART pins, and then we need to make sure our MUX is set for Peripheral A.
 
 Also update the Makefile. Copy the line that adds the object file
-"uart\_atmel\_sam3.o." Change it to sam4.
+"uart\_atmel\_sam3.o." Change it to SAM4.
+
+```make
+obj-$(CONFIG_UART_ATMEL_SAM4)	+= uart_atmel_sam4.o
+```
 
 Now we have adderssed all the configuration options in arduino\_due\_defconfig
 file. We should be good to go with compiling.
@@ -457,8 +476,40 @@ our file "zephyr.bin" to the device:
 
 ```bash
 JLink> device at91sam4s16c
+// Hit enter to accept JTAG as the default and the other default JTAG settings
 JLink> connect
-JLink> loadbin <target.bin>, 0x400000
+.
+.
+.
+Device "ATSAM4S16C" selected.
+
+
+TotalIRLen = 4, IRPrint = 0x01
+AP-IDR: 0x24770011, Type: AHB-AP
+Found Cortex-M4 r0p1, Little endian.
+FPUnit: 6 code (BP) slots and 2 literal slots
+CoreSight components:
+ROMTbl 0 @ E00FF000
+ROMTbl 0 [0]: FFF0F000, CID: B105E00D, PID: 000BB000 SCS
+ROMTbl 0 [1]: FFF02000, CID: B105E00D, PID: 003BB002 DWT
+ROMTbl 0 [2]: FFF03000, CID: B105E00D, PID: 002BB003 FPB
+ROMTbl 0 [3]: FFF01000, CID: B105E00D, PID: 003BB001 ITM
+ROMTbl 0 [4]: FFF41000, CID: B105900D, PID: 000BB9A1 TPIU
+Found 1 JTAG device, Total IRLen = 4:
+ #0 Id: 0x4BA00477, IRLen: 04, IRPrint: 0x1, CoreSight JTAG-DP (ARM)
+Cortex-M4 identified.
+
+JLink> loadbin <zephyr.bin>, 0x400000
+Downloading file [/home/justin/Zephyr/zephyr/samples/hello_world/microkernel/outdir/zephyr.bin]...
+Comparing flash   [100%] Done.
+Erasing flash     [100%] Done.
+Programming flash [100%] Done.
+Verifying flash   [100%] Done.
+J-Link: Flash download: Flash programming performed for 2 ranges (21504 bytes)
+J-Link: Flash download: Total time needed: 0.549s (Prepare: 0.200s, Compare: 0.150s, Erase: 0.020s, Program: 0.094s, Verify: 0.001s, Restore: 0.081s)
+O.K.
+JLink> r
+JLink> go
 ```
 
 [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) format files
@@ -478,12 +529,13 @@ objcopy -O binary zephyr.elf zephyr.bin
 
 Now we need to hook up a USB to UART on our board. We will grab our TTL to USB
 device and connect the TX pin on the RX pin on the board. We will also connect
-the RX pin from the TTL to USB device to the RX pin on the board. We can determine
-which pins and header those are on the board by looking at the schematic. The
-section [SAM4S Xplained I/O Expansion Header J1](http://www.atmel.com/webdoc/sam4s16xplained/sam4s16xplained.Connectors.section_uhn_bzg_xf.html) shows that
-pins 3 and 4 are what we are looking for. At this point we should see our
-program output on our serial device. That would confirm we added the Atmel SAM4S
-Xplained as a board to the Zephyr OS.
+the RX pin from the TTL to USB device to the RX pin on the board. We can
+determine which pins and header those are on the board by looking at the
+schematic. The section [SAM4S Xplained I/O Expansion Header J1](http://www.atmel
+.com/webdoc/sam4s16xplained/sam4s16xplained.Connectors.section_uhn_bzg_xf.html)
+shows that pins 3 and 4 are what we are looking for. At this point we should see
+our program output on our serial device. That would confirm we added the Atmel
+SAM4S Xplained as a board to the Zephyr OS.
 
 {::comment}
 ## Code
@@ -500,3 +552,4 @@ here.
 *[IRQ]: Interrupt
 *[I2C]: Interintegrated Circuit
 *[USB]: Universal Serial Bus
+*[TTL]: Transitor Transitor Logic
