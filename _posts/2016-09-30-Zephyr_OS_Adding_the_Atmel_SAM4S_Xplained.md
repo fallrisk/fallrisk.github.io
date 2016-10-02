@@ -8,12 +8,12 @@ Zephyr OS: Adding the Atmel SAM4S Xplained
 
 by Justin Watson 2016 Sept. 30
 
-This is an article on adding the Atmel SAM4S Xplained board to the Zephyr
-Operating System. We will start with the board code and then the SoC code. Then
-we will look at building and installing the binary file "zephyr.bin". We will
-make lots of references to the data sheet, schematic, and Zephyr OS
-documentation. One of the goals is to show how to figure out what your board and
-SoC need in order to be added to the Zephyr OS.
+This is an article on adding the Atmel SAM4S Xplained board to the [Zephyr
+Operating System](https://www.zephyrproject.org/). We will start with the board
+code and then the SoC code. Then we will look at building and installing the
+binary file "zephyr.bin". We will make lots of references to the data sheet,
+schematic, and Zephyr OS documentation. One of the goals is to show how to
+figure out what your board and SoC need in order to be added to the Zephyr OS.
 
 # Materials
 
