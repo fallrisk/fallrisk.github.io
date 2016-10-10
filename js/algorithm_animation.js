@@ -156,7 +156,7 @@ return {
 $(function () {
   MergeSortAnimation.start({
     count: 100,
-    svgId: '#algorithm_animation',
+    svgId: '#merge-sort-anim',
     width: $(window).width()
   })
 }) // End onLoad function

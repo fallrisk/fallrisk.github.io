@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <title>{{ page.title }}</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
   <link rel="stylesheet" href="{{ site.github.url }}/css/syntax.css">
   <link rel="stylesheet" href="{{ site.github.url }}/css/fallrisk.github.io.css">
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
@@ -23,10 +24,10 @@
 
 <div id="banner">
   <div title="Merge Sort Animation">
-    <svg id="algorithm_animation"></svg>
+    <svg id="merge-sort-anim"></svg>
   </div>
-  <div id="website_title">#define __Justin Watson's Website__</div>
-  <div id="about_site"><p>This is my website. There are many like it, but this one is mine.</p></div>
+  <div id="website-title"><span id="def-stmt">#define</span> __Justin Watson's Website__</div>
+  <div id="about"><p>This is my website. There are many like it, but this one is mine.</p></div>
 </div>
 
 <div>
@@ -35,9 +36,9 @@
   </div>
 </div>
 
-<div id="content" class="container">
+<div id="content">
 {{ content }}
-</div>
+</div> <!-- /contianer -->
 
 <div id="footer">
   <p class="text-center">

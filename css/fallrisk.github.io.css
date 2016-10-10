@@ -1,92 +1,188 @@
-/* Style sheet for fallrisk.github.io. */
-@import 'https://fonts.googleapis.com/css?family=Open+Sans';
-@import 'https://fonts.googleapis.com/css?family=Share+Tech+Mono';
+/*
+ * * Inside the blocks organize attributes alphabetically.
+ * * Ids identify, classes classify.
+ * * Shorthand order: Top, Right, Bottom, Left
+ *
+ * https://google.github.io/styleguide/htmlcssguide.xml#CSS_Style_Rules
+ * https://jigsaw.w3.org/css-validator/
+ *
+ * Table of Contents:
+ *   Layout
+ *   Type
+ *   Color
+ *
+ * In the section Layout. Remember to use mobile first.
+ * - phones/small size screens, default styles
+ * - tablets/medisum size screens in a min-width: 28.75em block;
+ * - desktops and other larger displays in a min-width: 40.5em block;
+ */
 
-html {
-  height: 100%;
-  box-sizing: border-box;
-}
+@import 'https://fonts.googleapis.com/css?family=Open+Sans|Share+Tech+Mono|Source+Code+Pro';
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+/* Layout */
 
-body {
-  min-height: 100%;
-  position: relative;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 16pt;
-  background-color: white;
-}
-a {
-  color: #2C57BA;
-}
-a:visitied {
-  color: #7437B2;
-}
-a:hover {
-  color: #4B76F8;
-  text-decoration: none;
-}
-p {
-  font-size: 16pt;
-}
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+  }
 
+  html {
+    height: 100%;
+  }
 
-#banner {
-  padding-right: 0;
-  padding-left: 0;
-  margin: 0 auto;
-  text-align: center;
-}
-#website_title {
-  font-size: 24pt;
-  font-family: 'Share Tech Mono', monospace;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin: 0 auto;
-  display: block;
-}
-#algorithm_animation {
-  margin: 0 auto;
-}
-#about_site p {
-  font-size: 12pt;
-}
+  body {
+    min-height: 100%;
+    position: relative;
+  }
 
+  #banner {
+    margin: 0 auto 0 auto;
+  }
 
-#nav {
-  margin-left: 20px;
-  font-size: 20pt;
-  text-align: center;
-}
-#nav a {
-  text-transform: uppercase;
-}
+    #website-title {
+      padding-left: 15px;
+      padding-right: 15px;
+      margin: 0 auto;
+      display: block;
+    }
 
-ul.posts li {
+      #def-stmt {
+        font-weight: bold;
+      }
 
-}
+  #merge-sort-anim {
+    margin: 0 auto 0 auto;
+  }
 
-#content {
-  padding-bottom: 200px;
-}
+  #nav {
+    margin: 0 0 0 20px;
+  }
 
-/* Always at the bottom, but not fixed. */
-/* https://codepen.io/cbracco/pen/zekgx */
-#footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
-  background-color: #efefef;
-  text-align: center;
-}
+  #content {
+    margin: 0 40px 0 40px;
+    padding: 0 0 200px 0;
+  }
 
-#footer p a {
-  font-size: 10pt;
-  padding: 0 5px;
-}
+  /* Always at the bottom, but not fixed. */
+  /* https://codepen.io/cbracco/pen/zekgx */
+  #footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 5px;
+  }
+
+  pre {
+    overflow-x: scroll;
+    overflow-y: visible;
+    padding: 50px 0 50px 0;
+  }
+
+  ol {
+    padding: 50px 0 50px 0;
+    list-style: circle;
+    list-style-position: inside;
+  }
+
+  /* Display 6 to a row for large displays (like medium tablets and up) */
+  @media screen and min-width: 40.5em) {
+    .related-products li {
+      width: 16.6666667%;
+    }
+  }
+
+/* Type */
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  #website-title {
+    font-size: 30px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  #banner {
+    text-align: center;
+  }
+
+  #footer {
+    text-align: center;
+  }
+
+    #footer p a {
+      font-size: 36px;
+      padding: 0 5px 0 5px;
+    }
+
+  #about p {
+    font-size: 12px;
+  }
+
+  #nav {
+    font-size: 20px;
+    text-align: center;
+  }
+
+    #nav a {
+      text-transform: uppercase;
+    }
+
+  ol,
+  p {
+    font-size: 18px;
+    line-height: 1.42;
+    margin: 10px 0 0 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: bold;
+    padding: 50px 0 0 0;
+    margin: 0 0 0 0;
+    font-size: 40px;
+  }
+
+  code {
+    font-size: 40px;
+    line-height: 1.42;
+    margin: 10px 0 0 0;
+  }
+
+    code span {
+      font-family: 'Source Code Pro', monospace;
+      font-size: inherit;
+    }
+
+/* Color */
+
+  a {
+    color: #2C57BA;
+    text-decoration: none;
+  }
+    a:visitied {
+      color: #7437B2;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #4B76F8;
+      text-decoration: none;
+    }
+
+  body {
+    background-color: white;
+  }
+
+  #footer {
+    background-color: #efefef;
+  }
