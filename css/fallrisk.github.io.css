@@ -5,6 +5,7 @@
  *
  * https://google.github.io/styleguide/htmlcssguide.xml#CSS_Style_Rules
  * https://jigsaw.w3.org/css-validator/
+ * https://developers.google.com/speed/docs/insights/UseLegibleFontSizes
  *
  * Table of Contents:
  *   Layout
@@ -76,36 +77,40 @@
     padding: 5px;
   }
 
-  pre {
+  code {
     overflow-x: scroll;
     overflow-y: visible;
-    padding: 50px 0 50px 0;
+    padding: 10px 0 0 0;
   }
 
   ol {
-    padding: 50px 0 50px 0;
     list-style: circle;
     list-style-position: inside;
   }
 
-  /* Display 6 to a row for large displays (like medium tablets and up) */
-  @media screen and min-width: 40.5em) {
-    .related-products li {
-      width: 16.6666667%;
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  ol {
+    margin: 16px 0 0 0;
   }
 
 /* Type */
 
-  body {
+  html {
+    font-size: 16px; /* All other fonts are "rem" and based off of this. */
     font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
+  body {
+  }
+
   #website-title {
-    font-size: 30px;
+    font-size: 18px;
     font-family: 'Share Tech Mono', monospace;
   }
 
@@ -118,8 +123,7 @@
   }
 
     #footer p a {
-      font-size: 36px;
-      padding: 0 5px 0 5px;
+      font-size: 16px;
     }
 
   #about p {
@@ -127,7 +131,7 @@
   }
 
   #nav {
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
   }
 
@@ -137,9 +141,8 @@
 
   ol,
   p {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.42;
-    margin: 10px 0 0 0;
   }
 
   h1,
@@ -147,20 +150,19 @@
   h3,
   h4 {
     font-weight: bold;
-    padding: 50px 0 0 0;
-    margin: 0 0 0 0;
-    font-size: 40px;
+    font-size: 20px;
   }
 
+  figure,
+  pre,
   code {
-    font-size: 40px;
-    line-height: 1.42;
-    margin: 10px 0 0 0;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 16px;
+    line-height: 1.12;
   }
 
     code span {
-      font-family: 'Source Code Pro', monospace;
-      font-size: inherit;
+      font-size: 16px;
     }
 
 /* Color */
@@ -186,3 +188,23 @@
   #footer {
     background-color: #efefef;
   }
+
+/* Tablet or rotated phone view. */
+@media screen and (min-width: 500px) {
+
+  /* Layout */
+
+  /* Type */
+
+  /* Color */
+}
+
+/* Desktop view */
+@media screen and (min-width: 800px) {
+
+  /* Layout */
+
+  /* Type */
+
+  /* Color */
+}
