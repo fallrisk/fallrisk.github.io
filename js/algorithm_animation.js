@@ -90,18 +90,31 @@ function sort (numbers, lo, hi) {
   merge(numbers, lo, mid, hi, svg)
 }
 
+// Determines the width to make the SVG so that it sits in the center better
+// and the bars are equally spaced without extra space on the right side of
+// the SVG.
+function getWidth (maxWidth, count) {
+  if (maxWidth < 400) {
+    N = 50
+    return 301
+  }
+  var barWidth = (maxWidth - margin * (count + 1)) / count
+  var extra = maxWidth - (barWidth * count + margin * (count + 1))
+  var newWidth = maxWidth - Math.floor(extra)
+  return newWidth
+}
+
 function start (options) {
-  //var svg = options.svg
   N = options.count || N
+  svgWidth = Math.min(options.width || 100, svgWidth)
+  svgWidth = getWidth(svgWidth, N)
+  barWidth = (svgWidth - margin * (N + 1)) / N
   for (var i = 0; i < N; i++) {
     auxArray.push(0)
   }
   var svgId = options.svgId || '#merge-sort-anim'
   svg = d3.select(svgId)
   numbers = Array.from(getRandomArray(N))
-  svgWidth = Math.min(options.width || 100, svgWidth)
-  console.log('svg-width: ' + svgWidth)
-  barWidth = (svgWidth - margin * (N + 1)) / N
   // SVG setup.
   svg.attr('width', svgWidth)
   svg.attr('height', svgHeight)
