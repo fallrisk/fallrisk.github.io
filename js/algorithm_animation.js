@@ -96,10 +96,11 @@ function start (options) {
   for (var i = 0; i < N; i++) {
     auxArray.push(0)
   }
-  var svgId = options.svgId || '#algorithm_animation'
+  var svgId = options.svgId || '#merge-sort-anim'
   svg = d3.select(svgId)
   numbers = Array.from(getRandomArray(N))
   svgWidth = Math.min(options.width || 100, svgWidth)
+  console.log('svg-width: ' + svgWidth)
   barWidth = (svgWidth - margin * (N + 1)) / N
   // SVG setup.
   svg.attr('width', svgWidth)

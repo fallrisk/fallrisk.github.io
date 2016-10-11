@@ -79,8 +79,12 @@
 
   pre,
   code {
+    overflow: auto;
     overflow-x: scroll;
-    overflow-y: visible;
+    overflow-y: hidden;
+  }
+
+  pre {
     padding: 10px 0 0 0;
   }
 
@@ -206,6 +210,13 @@
 @media screen and (min-width: 800px) {
 
   /* Layout */
+
+    pre,
+    code {
+      overflow-x: hidden;
+      overflow-y: hidden;
+      padding: 10px 0 0 0;
+    }
 
   /* Type */
 
