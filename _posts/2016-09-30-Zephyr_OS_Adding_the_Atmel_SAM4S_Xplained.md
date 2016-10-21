@@ -54,33 +54,34 @@ BOARD\_ATMEL\_SAM4S\_XPLD. We will also change the prompt for the bool value to
 "Atmel SAM4S Xplained". The depends statement need to be updated to the SoC on
 the SAM4S XPLD. This chip/soc configuration doesn't exist yet in
 <z/arch/arm/soc/>. It will after we finish with the board configuration. The
-chip on the SAM4S Xplained is the SAM4S16. So we change the depends statement to
-that, SOC\_ATMEL\_SAM4S16.
+chip on the SAM4S Xplained is the SAM4S16. So we change the "depends" statement
+to "SOC\_ATMEL\_SAM4S16".
 
 ## Kconfig\.defconfig
 
-On this file we need to change the "if" statement board variable to match the
-board variable we created in the file "Kconfig\.board". So we change it to
-BOARD\_ATMEL\_SAM4S\_XPLD. We will also change the option "default" from
+In this file we need to change the "if" statement board variable to match the
+board variable we created in the file "Kconfig\.board". Change it to
+BOARD\_ATMEL\_SAM4S\_XPLD. Also change the option "default" from
 "arduino\_due" to "atmel\_sam4s\_xpld".
 
 ## Makefile
 
-The file Makefile requires no changes.
+The file "Makefile" requires no changes.
 
 ## pinmux\.c
 
-This file does adds a function to the OS that sets up some pin configurations
-specific to the board. Our chip though only has 3 PIOs, A, B, and C. So all
-parts in this file that have to do with D can be removed.
+This file adds a function to the OS that sets up some pin configurations
+specific to the board. Our chip only has 3 PIOs named, A, B, and C. So all
+references in this file that have to do with D should be removed.
 
-If you look at section 31.6.24 you can see that this chip has 4 possible
-settings instead of 2. The chip has A, B, C, or D, while the SAM3S only has A
-and B. Section 11.2 has a table of what the A, B, C, and D functions do for the
-different pins. The \_\_PIOm (m is A, B, C, etc.) structures come from the file
-<z/arch/arm/soc/atmel\_sam3/> which defines a bunch of helpful structures. We
-will be making our own similar file inside the directory
-<z/arch/arm/soc/atmel\_sam4/> in the SoC section of this article.
+If you look at section 31.6.24 of the SAM4S data sheet you can see that this
+chip has 4 possible settings instead of 2. The SAM4S has A, B, C, and D, while
+the SAM3S only has A and B. Section 11.2 of the SAM4S data sheet has a table of
+what the A, B, C, and D functions do for the different pins. The \_\_PIOm (m is
+A, B, C, etc.) structures come from the file <z/arch/arm/soc/atmel\_sam3/>,
+which defines a bunch of helpful structures. We will be making our own similar
+file inside the directory <z/arch/arm/soc/atmel\_sam4/> in the SoC section of
+this article.
 
 Now just after all the defaults have been read we will modify the code to what
 the board has the pins connected too. We read all the settings so we have a
@@ -99,76 +100,75 @@ our board.
 Side question: Why do these pins get setup in the board file and not the
 application file or not as a driver?
 
-# SoC/Chip
+# System on Chip SoC/Chip
 
-The Zephyr OS uses the term SoC to refer to the chip. SoC stands for System on
-Chip. I use the word chip and SoC interchangably throughout this file. They mean
-exactly the same thing. The terms refer to the actual chip and only the chip.
-The terms do not refer to the board or the architecture.
+The Zephyr OS uses the term SoC to refer to the chip. I use the word chip and
+SoC interchangably throughout this file. Both terms refer to the actual chip and
+only the chip. The terms do not refer to the board or the architecture.
 
-I copied the directory <atmel\_sam3/> in <z/arch/arm/soc/>. Then I renamed the new
-copy to atmel\_sam4.
+I copied the directory <atmel\_sam3/> in <z/arch/arm/soc/>. Then I renamed the
+new copy to atmel\_sam4.
 
 ## Kconfig
 
-Lets start with the file Kconfig. Change all the parts in the file that say SAM3
+Let's start with the file Kconfig. Change all the parts in the file that say SAM3
 to SAM4.
 
-The config. SOC\_ATMEL\_SAM4\_EXT\_SLCK is for setting the clock to an external
-clock. The possible clock options for our chip the SAM4S16 are in section 28.
-The data sheet states that there are two PLLs, PLLA and PLLB. I copied the PLLA
-config blocks and renamed the copies to PLLB.
+The configuration SOC\_ATMEL\_SAM4\_EXT\_SLCK is for setting the clock to an
+external clock. The possible clock options for our chip the SAM4S16 are in
+section 28 of the SAM4S data sheet. The data sheet states that there are two
+PLLs, PLLA and PLLB. Copy the PLLA config blocks and rename the copy to
+PLLB.
 
 ## Kconfig.defconfig
 
-IRQ stands for interrupt. The two words can be used interchangable. Configure
-the number of interrupt (IRQ) priority bits. The data sheet in section 12.8 has a
-bullet point that says the IRQs have a programmable priority level from 0 to 15.
-The numbers 0 to 15 would require for bits, therefore the number of priority
-bits is 4. Configure the number of IRQs to 35. This was found in section 12.8 on
-page 196.
+IRQ stands for interrupt request. The two words can be used interchangably.
+Configure the number of interrupt request priority bits. In section 12.8 of the
+SAM4S data sheet there is a bullet point that says the UIRQs have a programmable
+priority from 0 to 15. The numbers 0 to 15 would require 4 bits, so set the
+number of priority bits to 4. Set the number of IRQs to 35 based on the table in
+the SAM4S data sheet on page 196.
 
-Now we need to modify the config SYS\_CLOCK\_HW\_CYCLES\_PER\_SEC. First we must
-determine how the 84 MHz was found on the Arduino Due. Then we can follow the
-same process to determine the clock for the Atmel SAM4S. The config
-SOC\_ATMEL\_SAM3\_PLLA\_MULA is set to 0x06 and the SOC\_ATMEL\_SAM3\_PLLA\_DIVA
-is set to 0x01. In section 27.6.1 we find the same equation in "help" section of
-the config. The equation (MAINCK * (MULA + 1) / DIVA). The Arduino Due schematic
-shows a 12 MHz clock connected to Xin and Xout. Solving that equation with the
-settings above we get:
+Now we need to modify the configuration setting
+SYS\_CLOCK\_HW\_CYCLES\_PER\_SEC. First we must determine how the 84 MHz was
+found on the Arduino Due. Then we can follow the same process to determine the
+clock for the Atmel SAM4S. The config SOC\_ATMEL\_SAM3\_PLLA\_MULA is set to
+0x06 and the SOC\_ATMEL\_SAM3\_PLLA\_DIVA is set to 0x01. In section 27.6.1 we
+find the same equation in "help" section of the configuration. The equation is
+(MAINCK * (MULA + 1) / DIVA). The Arduino Due schematic shows a 12 MHz clock
+connected to Xin and Xout. Solving that equation with the settings above we get:
 
 ```
 (12,000,000 * (6 + 1) / 1) = 84,000,000
 ```
 
-THis means the default settigns for MULA and DIVA in this PLL equation result in
+This means the default settigns for MULA and DIVA in this PLL equation result in
 the SYS\_CLOCK\_HW\_CYCLES\_PER\_SEC value. Now doing the same analysis for the
 SAM4S Xplained board we can find the value we should set our
 SYS\_CLOCK\_HW\_CYCLES\_PER\_SEC to. The SAM4S Xplained board also has a 12 MHz
 connected to Xin and Xout. The SAM4S has 2 PLLs though. This can be seen in
 Figure 29-2 page 517 of the SAM4S data sheet. We should also note that the clock
-system on both processors has a prescaler for the master clock (section 28.3,
+system on both processors have a prescaler for the master clock (section 28.3,
 page 527, SAM4S data sheet). There is no Zephyr OS configuration for the master
-clock preclaer so it is left at it default of 1. The master clock prescaler is
+clock prescaler so it is left at it default of 1. The master clock prescaler is
 configured in the file "soc.c". We can verify that it is at its default value by
 looking at the code in the section with the comment "Setup Prescaler".
 
-We will remove the I2C block because we don't need it to get the board running.
-We can add it back in later. We will also remove the config
-GPIO\_ATMEL\_SAM4\_PORTD because there is no PORT D on the SAM4S.
+Remove the I2C block because we don't need it to get the board running. We can
+add it back in later. Remove the configuration setting GPIO\_ATMEL\_SAM4\_PORTD
+because there is no PORT D on the SAM4S.
 
 ## Kconfig\.soc
 
-First we will change the processor name to 4S16 from 3X8E on the lines for
-"config" and "bool." Then in the select we must change the CPU\_CORTEX\_M3 to
+Change the processor name to 4S16 from 3X8E on the lines for "config" and
+"bool." Then in the setting "select" we must change the CPU\_CORTEX\_M3 to
 CPU\_CORTEX\_M4 because the SAM4S16 processor is a Cortex M4. This can be
-verified by look in the data sheet section 12. Changing this to M4 might also
-require adding more information to the architecture code for M4. We can look
-into this later by looking for where the CPU\_CORTEX\_M3 is defined and used.
-Now we must change the SOC\_ATMEL\_SAM3 to SOC\_ATMEL\_SAM4 because our
-processor is a SAM4. The next select statement is for
-SYS\_POWER\_LOW\_POWER\_STATE\_SUPPORTED. We need to look for where this is
-defined and used. We also need to check the data sheet to see if it is
+verified by looking in the data sheet section 12. Changing this to M4 might also
+require adding more information to the architecture code for the M4. We can look
+into this later by looking for where CPU\_CORTEX\_M3 is defined and used. Next
+change SOC\_ATMEL\_SAM3 to SOC\_ATMEL\_SAM4. The next select statement is for
+SYS\_POWER\_LOW\_POWER\_STATE\_SUPPORTED. We need to look for the place that
+this is defined and used. We also need to check the data sheet to see if it is
 supported.
 
 ## Linker\.ld
@@ -187,36 +187,35 @@ We will leave this file alone because we aren't adding any new source files.
 
 This file will require a lot of changes. It will also help us understand how a
 lot of the settings in the other files are used. We may end up changing some of
-them in this section. Hopefully you read the sections in order. Otherwise, these
-changes will not make sense. All sections of the code need to be compared
-between the data sheets for the SAM3 and SAM4.
+them in this section. Otherwise, these changes will not make sense. All sections
+of the code need to be compared between the data sheets for the SAM3 and SAM4.
 
-Lets start with the first "config" block CONFIG\_SOC\_ATMEL\_SAM4\_EXT\_SLCK.
-Our chip has this same setup as the SAM3. So we will leave the block in. We also
-have this still in our kernel configuration. file Kconfig. This code allows the
-Slow Clock to be set to use an external clock. We find that the Supply
-Controller SUPC allows this in the SAM3 so we will check the same section of the
-SAM4 data sheet. The Supply Controller Control Register has similar bits. We
-must also check the Supply Controller structure's start address. On the SAM3 it
-can be seen that the supply controller start address is 0x400E1A10. This is
-verified by looking at the Supply Controller Control Register's address in the
-data sheet and table 16.5.2. The control register is offset 0 so the control
-register marks the beginning of the SUPC registers. By investigating the same
-section of the SAM4, which is now section 18. We see that in table 18-2 the
-Supply Controller Control Register is offset 0 and thus marks the beginning of
-the Supply Controller structure defined in the file soc.h. The Supply Controller
-Control Register on the SAM4 is at address 0x400E1410. So we must change that
+Let's start with the first "config" block CONFIG\_SOC\_ATMEL\_SAM4\_EXT\_SLCK.
+Our chip has this same setup as the SAM3, so we will leave the block in. We also
+have this in our kernel configuration file Kconfig. This code allows the Slow
+Clock to be set to use an external clock. We find that the Supply Controller
+SUPC allows this in the SAM3 so we will check the same section of the SAM4 data
+sheet. The Supply Controller Control Register has similar bits. We must also
+check the Supply Controller structure's start address. On the SAM3 it can be
+seen that the supply controller start address is 0x400E1A10. This is verified by
+looking at the Supply Controller Control Register's address in the data sheet
+and table 16.5.2. The control register is offset 0 so the control register marks
+the beginning of the SUPC registers. By investigating the same section of the
+SAM4 data sheet, which is now section 18. We see that in table 18-2 the Supply
+Controller Control Register is offset 0 and thus marks the beginning of the
+Supply Controller structure defined in the file soc.h. The Supply Controller
+Control Register on the SAM4 is at address 0x400E1410. So change that
 SUPC\_ADDR in our SAM4 file soc.h.
 
-The next code to look at is the config block
-CONFIG\_SOC\_ATMEL\_SAM3\_EXT\_MAINCK. Here we need to do a similar thing with
-the last "config" block and ensure we have the correct addresses and a similar
-register structure as the SAM3. Basically fixing the code to meet the SAM4. The
-PMC is Power Management Controller section 29. There we see Table 29-3 shows
-offset 0 is the System Clock Enable Register. The System Clock Enable Register
-is located at address 0x400E0400. So we update the file soc.h again.
+The next block to look at is the config block
+CONFIG\_SOC\_ATMEL\_SAM3\_EXT\_MAINCK. Here we will do the same process with the
+last "config" block and ensure we have the correct addresses and a similar
+register structure as the SAM3. The PMC is Power Management Controller section
+29. There we see Table 29-3 shows offset 0 is the System Clock Enable Register.
+The System Clock Enable Register is located at address 0x400E0400. Update the
+file soc.h with the new address.
 
-Now we are at the part of code that sets up PLLA as the master clock. We
+Now we are at the part of the file that sets up PLLA as the master clock. We
 should continue to use this because it is already there and tested with the SAM3.
 At this point there is no good reason to not use PLLA and the default
 configuration settings. This whole block uses the PMC so we know we have the
@@ -226,17 +225,18 @@ understanding of what this code is doing.
 
 Next is the function "atmel\_sam3\_init". Change the name to "atmel\_sam4_init".
 First thing we see that we can configure is the use of
-CONFIG\_FLASH\_BASE\_ADDRESS we did this in the Kconfig file.
+CONFIG\_FLASH\_BASE\_ADDRESS we did this in the Kconfig file so follow the same
+process.
 
 Next is the setup of the flash controller. Go to the SAM4 data sheet section 20
-on the Enhanced Embedded Flash Controller EEFC. There we can look up what the
-"fm" register is. Looks like it is flash mode. In the address we see one address
+on the "Enhanced Embedded Flash Controller EEFC." There we can look up what the
+"fm" register is. There is one address
 for bank 0 and one for bank 1. We need to check these in our soc.h file and
 update them if they are different than the SAM3. They aren't different so no
-update is needed. This code is changing the flash wait state FWS. We should
+update is needed. This code is changing the flash wait state. We should
 leave this alone since we are matching clocks and the Zephyr team probably did
 some checking against a real Arudino Due. EEFC information is in section 20.5.1
-page 371.
+page 371 of the SAM4S data sheet.
 
 Now we come to a handful of SCB functions. SCB stands for System Control Block.
 In the SAM4 data sheet the System Control Block is found in section 12.9. Give
@@ -246,7 +246,7 @@ doing at boot.
 Next we see the call to the clock\_init function we modified earlier. We can
 leave this alone because we already checked it.
 
-Then we see the watchdog setup, which just disables the watchdog. We need to
+Next we see the watchdog setup, which just disables the watchdog. We need to
 update it's address if it different than the SAM3. Steps to do that are similar
 to those above for other register addresses. The Watchdog Timer is in section 17
 of the SAM4 data sheet.
@@ -264,9 +264,9 @@ the table and modify those that have a different number from the number in the
 SAM3. For example there are now two UARTs.
 
 Now we can update the PID definitions. First copy and pase the IRQs and change
-the name IRQ to PID. Now go to section 29.17. Notice there are two peripheral
-clock enable registers, 0 and 1. We only need definitions for those PIDs listed
-in either of those registers.
+the name IRQ to PID. Now go to section 29.17. of the SAM4 data sheet. Notice
+there are two peripheral clock enable registers, 0 and 1. We only need
+definitions for those PIDs listed in either of those registers.
 
 Next is the PMC address, which we alrady set when updating the file soc.c.
 
@@ -284,12 +284,11 @@ We already updated the EEFC when we updated the soc.c file.
 
 The Peripheral DMA Controller is next for verification and is in chapter 27.
 These read as if they are part of the Peripheral Transter Control Register
-based on the name on page 27.6.9. They are so these definitions are OK.
+based on the name on page 27.6.9.
 
-PIO Controllers are next for verification. PIO is in chapter 31. The table is
-table 31-5 on page 585. Offset 0 is the PIO Enable Register. Look at the PIO
-enable register we can see there is only PIOA, PIOB, and PIOC. The rest can
-be removed.
+PIO Controllers are next for verification. PIO is in chapter 31 and the table is
+31-5 on page 585. Offset 0 is the PIO Enable Register. Looking at the PIO enable
+register we can see there is only PIOA, PIOB, and PIOC. The rest can be removed.
 
 The SUPC address was updated in the "soc.c" file.
 
@@ -301,14 +300,15 @@ The Watchdog Timer WDT address was updated in the "soc.c" file.
 
 Below that are where the addresses are applied to the structures that provide
 an easier interface. We can remove the PIOD, PIOE, and PIOF structures. We
-can leave the rest because they do exist and are used in the soc.c file.
+will leave the rest because they do exist and are used in the soc.c file.
 
 ## soc_registers\.h
 
-This file is a bunch of structures that make it easier and more organized when
-working with the SOC registers. I went through each of these and verified their
-offsets being correct. I suggest you do the same. We have already glanced at the
-chapter and table for all the registers listed in the "soc\_registers.h" file.
+This file contains a bunch of structures that make it easier and more organized
+when working with the SOC registers. I went through each of these and verified
+that their offsets are correct. I suggest you do the same. We have already
+glanced at the chapter and table for all the registers listed in the
+"soc\_registers.h" file.
 
 # Known Unknowns in the Board Kconfig File
 
@@ -357,9 +357,9 @@ CONFIG_SERIAL=y
 ```
 
 So where are they used? Using ack (a grep like tool) we can search for the
-string in the Zephyr OS directories. Lets first look at CORTEX\_M\_SYSTICK. It
+string in the Zephyr OS directories. Let's first look at CORTEX\_M\_SYSTICK. It
 is used in the file <z/drivers/timer/Makefile>. The Makefile adds the file
-"cortex\_m\_systick.o" if this option is a yes. Lets look at that file. It looks
+"cortex\_m\_systick.o" if this option is a yes. Let's look at that file. It looks
 like it implements a driver for the Cortex-M systick device. That sounds like it
 works for Cortex-M3 (SAM3) and Cortex-M4 (SAM4). This driver "provides the
 standard kernel 'system clock driver' interfaces (cortex\_m\_systick.c)." Where
@@ -431,7 +431,7 @@ file. We should be good to go with compiling.
 
 # Compiling
 
-We are going to compile one of the sample application for our board. Lets use
+We are going to compile one of the sample application for our board. Let's use
 the hello-world application at <z/samples/hello\_world/microkernel>. Open up
 the [Getting Started Guide](https://www.zephyrproject.org/doc/getting_started/
 getting_started.html), and look at the section "Building a Sample
@@ -518,9 +518,9 @@ are the default output from building any program with gcc. If we did not have a
 ".bin" file for JLinkExe we would have to create one using the program
 "objcopy". The program "objcopy" takes an ELF and can create several different
 other files from it. We would need to change the file into an Intel Hex file
-because that is what J-Link expects. We will use the program "objcopy." It comes
-with the GNU binutils package. Here is an example of turning the "zephyr.elf"
-file into a "zephyr.bin" file for J-Link.
+because that is what J-Link expects. We will use the program "objcopy", which
+comes with the GNU binutils package. Here is an example of turning the
+"zephyr.elf" file into a "zephyr.bin" file for J-Link.
 
 ```bash
 objcopy -O binary zephyr.elf zephyr.bin
@@ -540,10 +540,10 @@ SAM4S Xplained as a board to the Zephyr OS.
 
 ## Code
 
-To view all the code changes that were made in this article go to the project
-["zephyr_atmel_sam4s_xpld"](https://github.com/fallrisk/zephyr_atmel_sam4s_xpld).
-You will see there is only one branch called "atmel\_sam4s\_xpld". Look the
-commits made by me Sept. 24 to Oct. 2.
+To view all the code changes that were made in this article go to the project ["
+zephyr_atmel_sam4s_xpld"](https://github.com/fallrisk/zephyr_atmel_sam4s_xpld).
+There is only one branch called "atmel\_sam4s\_xpld". Look at the commits made
+by me Sept. 24 to Oct. 2.
 
 {::comment}Abbreviations{:/}
 
