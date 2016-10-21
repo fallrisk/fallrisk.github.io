@@ -230,11 +230,32 @@
 @media print {
   #banner,
   #nav,
-  #footer {
+  #footer,
+  #disqus_thread {
     display: none;
   }
 
   @page {
-    margin: 0.5cm;
+    margin: 1cm;
+  }
+
+  body {
+    font: 12pt Georgia, "Times New Roman", Times, serif;
+    line-height: 1.3;
+  }
+
+  /* Avoid breaks directly after a heading. */
+  h1, h2, h3, h4, h5 {
+    page-break-after: avoid;
+  }
+
+  table, figure {
+    page-break-inside: avoid;
+  }
+
+  @page:right{
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+    }
   }
 }
