@@ -226,3 +226,15 @@
 
   /* Color */
 }
+
+@media print {
+  #banner,
+  #nav,
+  #footer {
+    display: none;
+  }
+
+  @page {
+    margin: 0.5cm;
+  }
+}
