@@ -10,10 +10,11 @@ by Justin Watson 2016 Sept. 30
 
 This is an article on adding the Atmel SAM4S Xplained board to the [Zephyr
 Operating System](https://www.zephyrproject.org/). We will start with the board
-code and then the SoC code. Then we will look at building and installing the
-binary file "zephyr.bin". We will make lots of references to the data sheet,
-schematic, and Zephyr OS documentation. One of the goals is to show how to
-figure out what your board and SoC need in order to be added to the Zephyr OS.
+code and continue with the SoC code. Then we will look at building and
+installing the binary file "zephyr.bin". It is recommended to have the data
+sheet, schematic and docs available for reference as they will be needed
+extensively. One of the goals is to show how to figure out what your board and
+SoC need in order to be added to the Zephyr OS.
 
 # Materials
 
@@ -28,23 +29,23 @@ SAM4S16C](http://www.atmel.com/devices/ATSAM4S16C.aspx) and the
 sheet](http://www.atmel.com/Images/Atmel-11100-32-bit%20Cortex-M4
 -Microcontroller-SAM4S_Datasheet.pdf) for the SAM4S16C. Also open up the [Online
 User Guide](http://www.atmel.com/webdoc/sam4s16xplained/index.html) and the
-[board files](http://www.atmel.com/tools/SAM4S-XPLD.aspx?tab=documents). Then we
-begin with the board. We must first create the board directory
-"atmel\_sam4s\_xpld" inside the directory <z/boards/>. Then we will copy the
-files from the directory <z/boards/arduino_due/> into the new directory
-<z/boards/atmel\_sam4s\_xpld/>. We then modify the file name for the file
-"arduino\_due\_defconfig" to "atmel\_sam4s\_xpld\_defconfig. Then we start the
-modifications for our board with the file "atmel\_sam4s\_xpld\_defconfig".
+[board files](http://www.atmel.com/tools/SAM4S-XPLD.aspx?tab=documents). We next
+create the board directory "atmel\_sam4s\_xpld" inside the directory
+<z/boards/>. Then we will copy the files from the directory
+<z/boards/arduino_due/> into the new directory <z/boards/atmel\_sam4s\_xpld/>.
+We then modify the file name for the file "arduino\_due\_defconfig" to
+"atmel\_sam4s\_xpld\_defconfig. Then we start the modifications for our board
+with the file "atmel\_sam4s\_xpld\_defconfig". Now each section is a file that
+we copied from the SAM3.
 
 ## atmel\_sam4s\_xpld_defconfig
 
-For this file we need to change all the parts that say SAM3 to SAM4. Then we
-will also change the SAM3X8E to SAM4S16 because that is the chip we have on
-the board.
+We need to update all part references from SAM3 to SAM4, and all chip references
+of SAM3XAE to SAM4S16.
 
 ## board\.h
 
-In the file "board.h" we need to change nothing.
+No change needed.
 
 ## Kconfig\.board
 
@@ -375,7 +376,7 @@ system. It doesn't do anything else. Looking at the other settings in this file
 we see the option UART\_CONSOLE\_ON\_DEV\_NAME. It is currently set to
 "UART\_0". We need to change this to "UART\_1" because our available UART is the
 second UART with the label UART1 in the data sheet. So lets add this line to our
-"atmel\_sam4s\_xpld\_defconfig" file with the value "UART_1". 
+"atmel\_sam4s\_xpld\_defconfig" file with the value "UART_1".
 
 ```ini
 CONFIG_UART_CONSOLE_ON_DEV_NAME="UART_1"
@@ -540,8 +541,10 @@ SAM4S Xplained as a board to the Zephyr OS.
 {::comment}
 ## Code
 
-To view all the code changes that we made in this article go view this a diff.
-here.
+To view all the code changes that were made in this article go to the project
+["zephyr_atmel_sam4s_xpld"](https://github.com/fallrisk/zephyr_atmel_sam4s_xpld).
+You will see there is only one branch called "atmel\_sam4s\_xpld". Look the
+commits made by me Sept. 24 to Oct. 2.
 {:/}
 
 {::comment}Abbreviations{:/}
