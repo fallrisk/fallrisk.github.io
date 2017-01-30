@@ -110,7 +110,7 @@
 /* Type */
 
   html {
-    font-size: 16px; /* All other fonts are "rem" and based off of this. */
+    font-size: 16px;
     font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
