@@ -21,16 +21,14 @@ to do. [This page](https://github.com/Theano/Theano/issues/1801) had the most
 useful information. I ended up doing the following:
 
 1. Install [graphviz for windows](http://www.graphviz.org/Download_windows.php) from the graphviz website.
-
 2. Add the directory bin of Graphviz to your environment variable "PATH".
-
-2. Install [pydot_ng](https://github.com/pydot/pydot-ng) in conda using the following command:
+3. Install [pydot_ng](https://github.com/pydot/pydot-ng) in conda using the following command:
 
 ```bash
 > pip install git+https://github.com/pydot/pydot-ng.git
 ```
 
-3. Install Graphviz for Python 3.5.
+4. Install Graphviz for Python 3.5.
 
 ```bash
 > pip install graphviz
@@ -55,5 +53,5 @@ If you look at the code for Keras [here](https://github.com/fchollet/keras/blob/
 You can see that Keras handles "pydot_ng", which works with Python 3.5.
 
 # Other References
-* http://stackoverflow.com/questions/38446771/importing-theano-attributeerror-module-object-has-no-attribute-find-graphvi
-* https://stackoverflow.com/questions/36886711/keras-runtimeerror-failed-to-import-pydot-after-installing-graphviz-and-pyd/36890526#36890526
+* [http://stackoverflow.com/questions/38446771/importing-theano-attributeerror-module-object-has-no-attribute-find-graphvi](http://stackoverflow.com/questions/38446771/importing-theano-attributeerror-module-object-has-no-attribute-find-graphvi)
+* [https://stackoverflow.com/questions/36886711/keras-runtimeerror-failed-to-import-pydot-after-installing-graphviz-and-pyd/36890526#36890526](https://stackoverflow.com/questions/36886711/keras-runtimeerror-failed-to-import-pydot-after-installing-graphviz-and-pyd/36890526#36890526)
