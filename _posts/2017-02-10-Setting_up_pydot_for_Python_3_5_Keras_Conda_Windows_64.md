@@ -12,7 +12,7 @@ to create a image of your model.
 The problem is getting the function to not throw an error that looks like the
 following:
 
-```
+```python
 AttributeError: 'module' object has no attribute 'find_graphviz'
 ```
 
@@ -24,22 +24,20 @@ useful information. I ended up doing the following:
 2. Add the directory bin of Graphviz to your environment variable "PATH".
 3. Install [pydot_ng](https://github.com/pydot/pydot-ng) in conda using the following command:
 
-```bash
-> pip install git+https://github.com/pydot/pydot-ng.git
-```
+    ```bash
+    > pip install git+https://github.com/pydot/pydot-ng.git
+    ```
 
 4. Install Graphviz for Python 3.5.
 
-```bash
-> pip install graphviz
-```
+    ```bash
+    > pip install graphviz
+    ```
 
 After you have done the previous steps you should see similar output after
 running the following command:
 
-```
-Python 3.5.2 | packaged by conda-forge | (default, Jul 26 2016, 02:06:09) [MSC v.1900 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license" for more information.
+```pycon
 >>> import pydot_ng as pydot
 >>> print(pydot.find_graphviz())
 {'neato': 'C:\\Program Files (x86)\\Graphviz2.38\\bin\\neato.exe', 'twopi': 'C:\\Program Files (x86)\\Graphviz2.38\\bin\\twopi.exe', 'sfdp': 'C:\\Program Files (x86)\\Graphviz2.38\
