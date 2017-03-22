@@ -219,11 +219,13 @@
     code {
       overflow-x: hidden;
       overflow-y: hidden;
-      padding: 10px 0 0 0;
     }
 
     figure {
-      background: #faf9f7;
+      background: #f6f8fb;
+      padding: 16px;
+      border-radius: 3px;
+      margin: 0;
     }
 
   /* Type */
