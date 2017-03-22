@@ -520,17 +520,17 @@ memset(g_python_input, '\0', 300);
 
 Run the program and type the following as two seperate commands.
 
-{% endhighlight %}python
+{% highlight python %}
 x = 4
 {% endhighlight %}
 
-{% endhighlight %}python
+{% highlight python %}
 x
 {% endhighlight %}
 
 You should see the output:
 
-{% endhighlight %}python
+{% highlight python %}
 >>> x
 4
 {% endhighlight %}

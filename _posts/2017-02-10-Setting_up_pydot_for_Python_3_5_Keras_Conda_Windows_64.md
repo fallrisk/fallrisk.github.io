@@ -11,9 +11,9 @@ In Keras you can use the function
 image of your model. The problem is getting the function to not throw an error
 that looks like the following:
 
-```python
+{% highlight python %}
 AttributeError: 'module' object has no attribute 'find_graphviz'
-```
+{% endhighlight %}
 
 I went through several stackoverflow questions and forums to figure out what to
 do. [This page](https://github.com/Theano/Theano/issues/1801) had the most
@@ -23,27 +23,27 @@ useful information. I ended up doing the following:
 2. Add the directory bin of Graphviz to your environment variable "PATH".
 3. Install [pydot_ng](https://github.com/pydot/pydot-ng) in conda using the following command:
 
-    ```
+    {% highlight bash %}
     > pip install git+https://github.com/pydot/pydot-ng.git
-    ```
+    {% endhighlight %}
 
 4. Install Graphviz for Python 3.5.
 
-    ```
+    {% highlight bash %}
     > pip install graphviz
-    ```
+    {% endhighlight %}
 
 After you have done the previous steps you should see similar output after
 running the following command:
 
-```pycon
+{% highlight python %}
 >>> import pydot_ng as pydot
 >>> print(pydot.find_graphviz())
 {'neato': 'C:\\Program Files (x86)\\Graphviz2.38\\bin\\neato.exe', 'twopi': 'C:\\Program Files (x86)\\Graphviz2.38\\bin\\twopi.exe', 'sfdp': 'C:\\Program Files (x86)\\Graphviz2.38\
 \bin\\sfdp.exe', 'fdp': 'C:\\Program Files (x86)\\Graphviz2.38\\bin\\fdp.exe', 'dot': 'C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe', 'circo': 'C:\\Program Files (x86)\\Grap
 hviz2.38\\bin\\circo.exe'}
 >>>
-```
+{% endhighlight %}
 
 # Extra Information
 
