@@ -31,6 +31,9 @@ Gzipped source tarball to your 'C' directory. You should now have "C:/Python-3.6
 
 <p align="center">
   <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen.png" width="400">
+</p>
+
+<p align="center">
   <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_2.png" width="400" >
 </p>
 
@@ -43,6 +46,9 @@ Add the directory "C:\Python36\include". Add C:\Python36\libs to the "Library Di
 
 <p align="center">
   <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png" width="400">
+</p>
+
+<p align="center">
   <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_4.png" width="400">
 </p>
 
@@ -74,7 +80,7 @@ Our project only uses the 3.6.0 release version. This tutorial is not for
 compiling Python. We are pulling the header file "Python.h" from the directory
 we just added to "Include Directories."
 
-Now in the function ```wWinMain``` add:
+Now in the function `wWinMain` add:
 
 ```cpp
 Py_SetProgramName(L"EmbeddedPythonTutorial");
@@ -98,7 +104,7 @@ HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_EMBEDDINGPY
 ```
 
 Now you also need to close up Python when your program finishes. To do that
-add a call to ```Py_Finalize``` before the return statement in ```wWinMain```.
+add a call to `Py_Finalize` before the return statement in `wWinMain`.
 
 ```cpp
 // Close up Python.
@@ -113,9 +119,9 @@ default Python libraries as a ZIP file in your program.
 
 Download "Windows x86 embeddable zip file" this has a python36.zip file inside
 of it that has all the Python libraries pre-compiled. We can make our program
-use this instead of the files at C:\Python36\Lib. Change the ```Py_SetPath```
+use this instead of the files at C:\Python36\Lib. Change the `Py_SetPath`
 to use the zip file. Copy the ZIP file to your project directory. Then make
-the ```Py_SetPath``` look like this:
+the `Py_SetPath` look like this:
 
 # Testing our Python Setup
 
@@ -150,9 +156,9 @@ text for the Python console. You need another text box for the Python results.
 
 ## Input Text Box
 
-Inside ```WndProc``` we will add the code for the input text box. Inside
-the switch statement we need to add a new case. Add ```case WM_CREATE:``` just
-above ```case WM_COMMAND```. Then inside the ```case WM_CREATE``` add the
+Inside `WndProc` we will add the code for the input text box. Inside
+the switch statement we need to add a new case. Add `case WM_CREATE:` just
+above `case WM_COMMAND`. Then inside the `case WM_CREATE` add the
 following code:
 
 ```cpp
@@ -225,7 +231,7 @@ LRESULT CALLBACK InputBoxProc(HWND, UINT, WPARAM, LPARAM);
 WNDPROC g_default_input_box_proc;
 ```
 
-Near the bottom of the file, below the function ```About()``` add this window
+Near the bottom of the file, below the function `About()` add this window
 procedure.
 
 ```cpp
@@ -266,7 +272,7 @@ static LRESULT CALLBACK InputBoxProc(HWND hDlg, UINT message, WPARAM wParam,
 ```
 
 Inside the above code do you see the call to statement
-```SetWindowText(g_input_window, L"");```? This sets the window text of your
+`SetWindowText(g_input_window, L"");`? This sets the window text of your
 edit box. In order for this to work we need to make the input box a global
 variable. Move the code
 
@@ -283,16 +289,16 @@ That's how you know your window procedure is capturing the windows key.
 ## Sending the Input to the Python Interperter
 
 To send the input to the Python interperter you must call it with
-```[PyRun_String](https://docs.python.org/3.4/c-api/veryhigh.html#c.PyRun_String)```. You can't spend to much time in the GUI thread though doing any
+`[PyRun_String](https://docs.python.org/3.4/c-api/veryhigh.html#c.PyRun_String)`. You can't spend to much time in the GUI thread though doing any
 long task. If you do your program will hang and people won't want to use it.
 To overcome this you will put the input in a global variable and set an event
 for a seperate thread to know there is new input ready.
 
-Include ```#include <process.h>```. Add that line to the top of the file. This
-provides the functions ```_beginthreadex``` and ```_endthreadex```.
+Include `#include <process.h>`. Add that line to the top of the file. This
+provides the functions `_beginthreadex` and `_endthreadex`.
 
-In the ```wWinMain``` function add the following just after the call to
-```Py_InitializeEx(0);```.
+In the `wWinMain` function add the following just after the call to
+`Py_InitializeEx(0);`.
 
 ```cpp
 // Start the Python input thread.
@@ -313,7 +319,7 @@ unsigned g_python_thread_id;
 BOOL g_python_thread_done;
 ```
 
-In the forward declerations section add the ```PythonThreadFunc``` prototype.
+In the forward declerations section add the `PythonThreadFunc` prototype.
 
 ```cpp
 unsigned __stdcall  PythonThreadFunc(void *pArguments);
@@ -341,7 +347,7 @@ the section "Python Interperter Variables" at the top.
 HANDLE g_python_input_event;
 ```
 
-Initialize the event in the ```wWinMain``` just before the ```Py_SetPath```
+Initialize the event in the `wWinMain` just before the `Py_SetPath`
 function.
 
 ```cpp
@@ -351,8 +357,8 @@ ResetEvent(g_python_input_event);
 
 Since our thread will be waiting for this event to run you need to set the event
 when you are trying to close the program so the Python thread dies gracefully.
-In between where you set the ```g_python_thread_done = TRUE;``` and where
-you close the thread handle (```CloseHandle(g_python_thread_handle);```), set
+In between where you set the `g_python_thread_done = TRUE;` and where
+you close the thread handle (`CloseHandle(g_python_thread_handle);`), set
 the event and wait for it. The code should look like this.
 
 ```cpp
@@ -362,8 +368,8 @@ WaitForSingleObject(g_python_thread_handle, INFINITE);
 CloseHandle(g_python_thread_handle);
 ```
 
-Inside the ```PythonThreadFunc``` add the code so that the event system waits
-for your new Python inpute event, ```g_python_input_event```. The code goes
+Inside the `PythonThreadFunc` add the code so that the event system waits
+for your new Python inpute event, `g_python_input_event`. The code goes
 inside the while loop.
 
 ```cpp
@@ -387,7 +393,7 @@ enter key. At the top create a varible named "g\_python\_input".
 char g_python_input[200];
 ```
 
-In the ```InputBoxProc``` you need to uncomment the two lines that were
+In the `InputBoxProc` you need to uncomment the two lines that were
 commented out when we first wrote code there. One writes the text from the
 input box to our global Python input variable. The other line sets the event
 that you use to tell the thread new input is available.
@@ -410,7 +416,7 @@ if (strcmp(g_python_input, "") == 0)
 
 For the above code to work the output box needs to be a global variable so that
 we have easy access to it. Make the output box global by removing it from the
-top of ```WndProc``` and putting it next to the ```input_text_box```. This is
+top of `WndProc` and putting it next to the `input_text_box`. This is
 the line you are looking for...
 
 ```cpp
@@ -435,7 +441,7 @@ Python console. This part of the project also takes quite a bit of work.
 You need to modify the display hook so you can grab the data in a Python
 variable.
 
-Inside ```PythonThreadFunc``` add the following code at the top of the function
+Inside `PythonThreadFunc` add the following code at the top of the function
 above the while loop.
 
 ```cpp
@@ -463,11 +469,11 @@ You can find more about
 and
 [sys.excepthook](https://docs.python.org/3.6/library/sys.html#sys.excepthook)
 in the Python documentation. These new functions set the value inside of
-```__main__```.
+`__main__`.
 
 You can now grab the results of entering a Python statement by grabbing the
-data in the variable ```__result``` or grab the exception information in
-```__traceback```. You will add the code to do this now. Just after the if
+data in the variable `__result` or grab the exception information in
+`__traceback`. You will add the code to do this now. Just after the if
 statement to check in the user's input was empty append the following code.
 
 ```cpp
