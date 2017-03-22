@@ -44,6 +44,8 @@ and right click the project. Then go to settings in the context menu. Then
 in the window that opens go to VC++ directories. Then select "Include Directories".
 Add the directory "C:\Python36\include". Add C:\Python36\libs to the "Library Directories."
 
+![Setting up directories](https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png)
+
 <p align="center">
   <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png" width="400">
 </p>
