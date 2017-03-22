@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Embedding Python in C++
-comments: false
+comments: true
 ---
 
 Embedding Python in C++
@@ -30,8 +30,8 @@ Gzipped source tarball to your 'C' directory. You should now have "C:/Python-3.6
 # Coding
 
 <p align="center">
-  <img src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen.png">
-  <img src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_2.png">
+  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen.png" width="400">
+  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_2.png" width="400" >
 </p>
 
 Make sure you have "x64" selected in your "Solution Platforms."
@@ -42,8 +42,8 @@ in the window that opens go to VC++ directories. Then select "Include Directorie
 Add the directory "C:\Python36\include". Add C:\Python36\libs to the "Library Directories."
 
 <p align="center">
-  <img src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png">
-  <img src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_4.png">
+  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png" width="400">
+  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_4.png" width="400">
 </p>
 
 Copy "C:\Python36\python36.dll" to "C:\Users\Justin\Documents\Visual Studio 2015\Projects\EmbeddingPythonTutorial\EmbeddingPythonTutorial" if this directory
@@ -174,7 +174,7 @@ Click in it and type. That where we will insert Python code for your Python
 Console. Next you will add the output text box.
 
 <p align="center">
-  <img src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Input_Text_Box.png">
+  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Input_Text_Box.png" width="400">
 </p>
 
 ## Output Text Box
