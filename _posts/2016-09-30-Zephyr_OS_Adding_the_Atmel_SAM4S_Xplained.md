@@ -319,7 +319,7 @@ options with a "yes" as their setting. Specifically we should look at the
 options that we haven't seen used in any of the files in the board's directory
 or the SoC's directory. In that file we see:
 
-```ini
+{% highlight ini %}
 CONFIG_ARM=y
 CONFIG_SOC_ATMEL_SAM3X8E=y
 CONFIG_BOARD_ARDUINO_DUE=y
@@ -330,11 +330,11 @@ CONFIG_SERIAL=y
 CONFIG_UART_ATMEL_SAM3=y
 CONFIG_SOC_ATMEL_SAM3_EXT_MAINCK=y
 CONFIG_PINMUX=y
-```
+{% endhighlight %}
 
 Here are the configuration options again with the file we saw them used in.
 
-```ini
+{% highlight ini %}
 CONFIG_ARM=y
 CONFIG_SOC_ATMEL_SAM3X8E=y          soc/Kconfig.soc: selects several other options
 CONFIG_BOARD_ARDUINO_DUE=y
@@ -345,16 +345,16 @@ CONFIG_SERIAL=y
 CONFIG_UART_ATMEL_SAM3=y            soc/Kconfig.defconfig: defines some UART definitions
 CONFIG_SOC_ATMEL_SAM3_EXT_MAINCK=y  soc/Kconfig.defconfig: selects the external clock
 CONFIG_PINMUX=y                     board/Makefile: adds the pinmux if this is set to yes
-```
+{% endhighlight %}
 
 Of these we have not seen the following in any files we have worked on.
 
-```ini
+{% highlight ini %}
 CONFIG_CORTEX_M_SYSTICK=y
 CONFIG_CONSOLE=y
 CONFIG_UART_CONSOLE=y
 CONFIG_SERIAL=y
-```
+{% endhighlight %}
 
 So where are they used? Using ack (a grep like tool) we can search for the
 string in the Zephyr OS directories. Let's first look at CORTEX\_M\_SYSTICK. It
@@ -378,9 +378,9 @@ we see the option UART\_CONSOLE\_ON\_DEV\_NAME. It is currently set to
 second UART with the label UART1 in the data sheet. So lets add this line to our
 "atmel\_sam4s\_xpld\_defconfig" file with the value "UART_1".
 
-```ini
+{% highlight ini %}
 CONFIG_UART_CONSOLE_ON_DEV_NAME="UART_1"
-```
+{% endhighlight %}
 
 In a later paragraph we will see that we will be updating the serial driver for
 our board and SoC to match the value of the CONFIG\_UART\_CONSOLE\_ON\_DEV\_NAME
@@ -422,9 +422,9 @@ UART pins, and then we need to make sure our MUX is set for Peripheral A.
 Also update the Makefile. Copy the line that adds the object file
 "uart\_atmel\_sam3.o." Change it to SAM4.
 
-```make
+{% highlight make %}
 obj-$(CONFIG_UART_ATMEL_SAM4)	+= uart_atmel_sam4.o
-```
+{% endhighlight %}
 
 Now we have adderssed all the configuration options in arduino\_due\_defconfig
 file. We should be good to go with compiling.
@@ -440,16 +440,16 @@ this document. There is a paragraph that says "The above invocation of make
 will build the hello_world sample application using the default settings
 defined in the application’s Makefile." We need to run the command:
 
-```bash
+{% highlight shell %}
 make BOARD=atmel_sam4s_xpld
-```
+{% endhighlight %}
 
 To remove old code that might be there we must use the following command to
 compile:
 
-```bash
+{% highlight shell %}
 make clean && make pristine && time make BOARD=atmel_sam4s_xpld
-```
+{% endhighlight %}
 
 Specifically the command `make clean` clears out all the old build files. The
 command `time` measures how long the build takes and outputs it at the end.
@@ -475,7 +475,7 @@ have JLinkExe running then go to section 6. Then we go to section 6.4.5 J-Link
 Commander and read. These are the minimum commands required to connect an load
 our file "zephyr.bin" to the device:
 
-```bash
+{% highlight shell %}
 JLink> device at91sam4s16c
 // Hit enter to accept JTAG as the default and the other default JTAG settings
 JLink> connect
@@ -511,7 +511,7 @@ J-Link: Flash download: Total time needed: 0.549s (Prepare: 0.200s, Compare: 0.1
 O.K.
 JLink> r
 JLink> go
-```
+{% endhighlight %}
 
 [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) format files
 are the default output from building any program with gcc. If we did not have a
@@ -522,9 +522,9 @@ because that is what J-Link expects. We will use the program "objcopy", which
 comes with the GNU binutils package. Here is an example of turning the
 "zephyr.elf" file into a "zephyr.bin" file for J-Link.
 
-```bash
+{% highlight shell %}
 objcopy -O binary zephyr.elf zephyr.bin
-```
+{% endhighlight %}
 
 # Testing
 

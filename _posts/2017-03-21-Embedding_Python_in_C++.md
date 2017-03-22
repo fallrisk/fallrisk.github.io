@@ -524,6 +524,8 @@ Run the program and type the following as two seperate commands.
 x = 4
 {% endhighlight %}
 
+And then...
+
 {% highlight python %}
 x
 {% endhighlight %}

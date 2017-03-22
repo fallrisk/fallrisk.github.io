@@ -23,15 +23,15 @@ useful information. I ended up doing the following:
 2. Add the directory bin of Graphviz to your environment variable "PATH".
 3. Install [pydot_ng](https://github.com/pydot/pydot-ng) in conda using the following command:
 
-    {% highlight bash %}
-    > pip install git+https://github.com/pydot/pydot-ng.git
-    {% endhighlight %}
+{% highlight shell %}
+> pip install git+https://github.com/pydot/pydot-ng.git
+{% endhighlight %}
 
 4. Install Graphviz for Python 3.5.
 
-    {% highlight bash %}
-    > pip install graphviz
-    {% endhighlight %}
+{% highlight shell %}
+> pip install graphviz
+{% endhighlight %}
 
 After you have done the previous steps you should see similar output after
 running the following command:
