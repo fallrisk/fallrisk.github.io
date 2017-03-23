@@ -81,7 +81,7 @@ Copy "C:\Python36\python36.dll" to "C:\Users\Justin\Documents\Visual Studio 2015
 does not exist you just need to run the program in debug mode once and it will
 be created.
 
-Now at the top of your file "EmbeddedPythonTutorial.cpp" add the following
+At the top of your file "EmbeddedPythonTutorial.cpp" add the following
 code:
 
 {% highlight cpp %}
@@ -103,7 +103,8 @@ code:
 This gets around Python trying to use debug code even when we use our project.
 Our project only uses the 3.6.0 release version. This tutorial is not for
 compiling Python. We are pulling the header file "Python.h" from the directory
-we just added to "Include Directories."
+we just added to "Include Directories." The "Python.h" file has all the `Py_`
+functions we will need for this project.
 
 Now in the function `wWinMain` add:
 
@@ -150,13 +151,16 @@ the `Py_SetPath` look like this:
 
 # Testing our Python Setup
 
+Set the library path for your embedded Python. This code goes inside the
+function `wWinMain` above the line `Py_SetProgramName`.
+
 {% highlight cpp %}
 Py_SetPath(L".\\python36.zip");
 {% endhighlight %}
 
 I have mine setup like the following so that when I am debugging the project the
 program is using my local libraries instead of the pre-compiled libraries inside
-a ZIP file.
+of a ZIP file.
 
 {% highlight cpp %}
 #if !defined(_DEBUG)
@@ -166,8 +170,8 @@ Py_SetPath(L"C:\\Python36\\Lib");
 #endif
 {% endhighlight %}
 
-At this point you should run the project to make sure we got all of our settings
-correct and all of our files in the right place.
+At this point you should run the project to make sure we got all of our
+settings correct and all of our files in the right place.
 
 Everything should look like this project at this point.
 
@@ -567,7 +571,18 @@ You should see the output:
 4
 {% endhighlight %}
 
-The code at this point is [EmbeddedingPythonTutorial_Part4.zip](https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial_Part4.zip).
+Now enter "z" into your text box. You should see the following traceback in
+your output box.
+
+{% highlight python %}
+>>> z
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+NameError: name 'z' is not defined
+{% endhighlight %}
+
+This means we have our embedded Python console set up correctly. The code at
+this point is [EmbeddedingPythonTutorial_Part4.zip](https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial_Part4.zip).
 
 # Adding a Python Module
 
@@ -575,3 +590,141 @@ You are going to make a custom module and add it to your embedded Python
 console system. You will be able to make calls to the embedded module through
 your Python input box.
 
+Create a new file in the solution by hitting the hot key `Ctrl+Shift+A`. Select
+"Visual C++" in the tree on the left and then select "C++ File". Now in the
+"Name" box at the bottom, enter "awesome_module.cpp". Click "Add". Enter
+`Ctrl+Shift+A` again to add another file to the project. Select "Header File",
+and enter "awesome_module.h" for the name. Click "Add". Now go to the header
+file "awesome_module.h". Enter this code:
+
+{% highlight cpp %}
+#ifndef AWESOME_MODULE_H_
+#define AWESOME_MODULE_H_
+
+// This code makes us always use the release version of Python
+// even when in debug mode of this program.
+// https://pytools.codeplex.com/discussions/547562
+#define HAVE_ROUND
+#ifdef _DEBUG
+#define RESTORE_DEBUG
+#undef _DEBUG
+#endif
+#include <Python.h>
+#ifdef RESTORE_DEBUG
+#define _DEBUG
+#undef RESTORE_DEBUG
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern PyObject* PyInit_awesome(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+{% endhighlight %}
+
+Now go to the source file "awesome_module.cpp". Add the following code:
+
+{% highlight cpp %}
+#include "stdafx.h"
+#include <Windows.h>
+
+#include "awesome_module.h"
+
+// This code makes us always use the release version of Python
+// even when in debug mode of this program.
+// https://pytools.codeplex.com/discussions/547562
+#define HAVE_ROUND
+#ifdef _DEBUG
+#define RESTORE_DEBUG
+#undef _DEBUG
+#endif
+#include <Python.h>
+#ifdef RESTORE_DEBUG
+#define _DEBUG
+#undef RESTORE_DEBUG
+#endif
+
+static PyObject *AwesomeError;
+
+PyMethodDef awesome_methods[] =
+{
+    { NULL, NULL, 0, NULL } /* Sentinel */
+};
+
+static struct PyModuleDef awesome_module =
+{
+    PyModuleDef_HEAD_INIT,
+    "awesome",               /* Module Name */
+    NULL,                    /* Module Documentation (may be NULL) */
+    -1,
+    awesome_methods
+};
+
+PyObject* PyInit_awesome(void)
+{
+    PyObject *m;
+    m = PyModule_Create(&awesome_module);
+
+    if (m == NULL)
+        return NULL;
+
+    // Add the SuperSerialError exception.
+    AwesomeError = PyErr_NewException("awesome.error", NULL, NULL);
+    Py_INCREF(AwesomeError);
+    PyModule_AddObject(m, "error", AwesomeError);
+
+    PyModule_AddStringConstant(m, "best_actor", "Sylvester Stalone");
+    PyModule_AddStringConstant(m, "best_movie", "A Bug's Life");
+
+    return m;
+}
+{% endhighlight %}
+
+All of this code come from following the Python lesson on
+[extending: A Simple Example](https://docs.python.org/3.6/extending/extending.html#a-simple-example). More information is in the
+[Extending/Embedding FAQ](https://docs.python.org/3/faq/extending.html)
+Refer to this if these documents if you want to keep adding to your module. You
+can add more variables and functions to your module.
+
+Go to your "EmbeddingPythonTutorial.cpp" file. Add the module header file to
+your "EmbeddingPythonTutorial.cpp" file. Add the following code just below
+the `#include "EmbeddingPythonTutorial.h"`.
+
+{% highlight cpp %}
+#include "awesome_module.h"
+{% endhighlight %}
+
+Now you need to have Python import the module. Go to where we call
+`Py_SetPath` in `wWinMain`. Add the call to `PyImport_AppendInitTab` just
+above it.
+
+{% highlight cpp %}
+PyImport_AppendInittab("awesome", PyInit_awesome);
+{% endhighlight %}
+
+This tell Python where to find the module "awesome". Python knows the module is
+avaiable at that `PyInit` function. The embedded console must still call
+`import awesome` in order to have the module available. Go down to the function
+`PythonThreadFunc`. Modify the line `PyRun_SimpleString("import __main__")...`
+to look like this:
+
+{% highlight cpp %}
+PyRun_SimpleString("import __main__, traceback, awesome");
+{% endhighlight %}
+
+Run the program. In your input box type `awesome.best_actor` you should see
+
+{% highlight python %}
+>>> awesome.best_actor
+Sylvester Stalone
+{% endhighlight %}
+
+Now you have the foundation of an embedded module to extend your embedded
+Python console. The code at this point is
+[EmbeddingPythonTutorial_Part5.zip](https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial_Part5.zip).
