@@ -30,7 +30,9 @@ Gzipped source tarball to your 'C' directory. You should now have "C:/Python-3.6
 # Coding
 
 <p align="center">
-  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen.png" width="400">
+  <img height="300" style="display:block;width:100%;max-width:600px"
+       src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen.png"
+       width="400">
 </p>
 
 <p align="center">
