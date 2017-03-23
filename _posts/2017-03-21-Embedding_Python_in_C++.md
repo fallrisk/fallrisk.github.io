@@ -7,17 +7,13 @@ comments: true
 Embedding Python in C++
 
 This is how I embedded Python in my C++ projects. My goal was to have a console
-that would take in Python and eventually plugins in Python that use an embedded
-Python module.
-
-I will also show you how to make a module and add it to your embedded Python
-console.
+that would take in Python in a REPL fashion. I also wanted plugins in Python
+that use an embedded Python module; embedded inside the program. I will also
+show you how to make such a module and add it to your embedded Python console.
 
 # Setup
 
-Get [Visual Studio 15 Express for Desktop](https://www.visualstudio.com/post-download-vs/?sku=xdesk&clcid=0x409&telem=ga#).
-
-"C:\Users\Justin\Documents\Visual Studio 2015\Projects\EmbeddingPythonTutorial"
+Get [Visual Studio 15 Express for Desktop](https://www.visualstudio.com/post-download-vs/?sku=xdesk&clcid=0x409&telem=ga#) from Miscrosoft's website.
 
 Get [7-Zip](http://www.7-zip.org/download.html) for compressed file needs.
 Get Python 3.6. [Windows x86-64 executable installer](https://www.python.org/ftp/python/3.6.0/python-3.6.0-amd64.exe). Install Python 3.6 to "C:\Python36".
@@ -29,31 +25,56 @@ Gzipped source tarball to your 'C' directory. You should now have "C:/Python-3.6
 
 # Coding
 
-<p align="center">
-  <img height="300" style="display:block;width:100%;max-width:600px"
-       src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen.png"
-       width="400">
-</p>
+Open Visual Studio 2015 and create a new C++ Win32 Project. The template is
+under Templates/VisualC++/Win32 in the tree on the left side of the create
+project menu. It will look like this:
 
 <p align="center">
-  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_2.png" width="400" >
+    <a href="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen.png">
+        <img alt="Project creation screen."
+           height="300" style="display:block;width:100%;max-width:600px"
+           src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen.png"
+           width="400">
+    </a>
 </p>
 
-Make sure you have "x64" selected in your "Solution Platforms."
+My project directory is "C:\Users\Justin\Documents\Visual Studio
+2015\Projects\EmbeddingPythonTutorial". Your project directory will be similar.
+Once you click next you will see a screen similar to this:
+
+<p align="center">
+    <a href="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_2.png">
+        <img alt="Win32 application wizard."
+           height="300" style="display:block;width:100%;max-width:600px"
+           src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_2.png"
+           width="400">
+    </a>
+</p>
 
 In the EmbeddedPythonTutorial Windows project. Go to the solution explorer pain
 and right click the project. Then go to settings in the context menu. Then
 in the window that opens go to VC++ directories. Then select "Include Directories".
 Add the directory "C:\Python36\include". Add C:\Python36\libs to the "Library Directories."
 
-![Setting up directories](https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png)
-
 <p align="center">
-  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png" width="400">
+    <a href="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png">
+        <img alt="VC++ directory settings."
+           height="300" style="display:block;width:100%;max-width:600px"
+           src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_3.png"
+           width="400">
+    </a>
 </p>
 
+Click "OK" and you will be back in the project screen. At the top of the IDE
+make sure you have "x64" selected in your "Solution Platforms."
+
 <p align="center">
-  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_4.png" width="400">
+    <a href="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_4.png">
+        <img alt="VC++ directory settings."
+           height="300" style="display:block;width:100%;max-width:600px"
+           src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Project_Screen_4.png"
+           width="400">
+    </a>
 </p>
 
 Copy "C:\Python36\python36.dll" to "C:\Users\Justin\Documents\Visual Studio 2015\Projects\EmbeddingPythonTutorial\EmbeddingPythonTutorial" if this directory
@@ -184,7 +205,12 @@ Click in it and type. That where we will insert Python code for your Python
 Console. Next you will add the output text box.
 
 <p align="center">
-  <img height="300" src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Input_Text_Box.png" width="400">
+    <a href="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Input_Text_Box.png">
+        <img alt="Screenshot of input box."
+           height="300" style="display:block;width:100%;max-width:600px"
+           src="https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial-Input_Text_Box.png"
+           width="400">
+    </a>
 </p>
 
 ## Output Text Box
