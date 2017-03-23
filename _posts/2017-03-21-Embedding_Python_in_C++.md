@@ -80,9 +80,10 @@ make sure you have "x64" selected in your "Solution Platforms."
     </a>
 </p>
 
-Copy "C:\Python36\python36.dll" to "C:\Users\Justin\Documents\Visual Studio 2015\Projects\EmbeddingPythonTutorial\EmbeddingPythonTutorial" if this directory
-does not exist you just need to run the program in debug mode once and it will
-be created.
+Copy "C:\Python36\python36.dll" to "C:\Users\Justin\Documents\Visual Studio
+2015\Projects\EmbeddingPythonTutorial\EmbeddingPythonTutorial" if this
+directory does not exist you just need to run the program in debug mode once
+and it will be created.
 
 At the top of your file "EmbeddedPythonTutorial.cpp" add the following
 code:
