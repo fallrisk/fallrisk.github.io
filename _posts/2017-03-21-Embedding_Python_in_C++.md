@@ -16,12 +16,15 @@ show you how to make such a module and add it to your embedded Python console.
 Get [Visual Studio 15 Express for Desktop](https://www.visualstudio.com/post-
 download-vs/?sku=xdesk&clcid=0x409&telem=ga#) from Microsoft's website. Get
 [7-Zip](http://www.7-zip.org/download.html) for extracting compressed files.
-Get Python 3.6. [Windows x86-64 executable
-installer](https://www.python.org/ftp/python/3.6.0/python-3.6.0-amd64.exe).
-Install Python 3.6 to "C:\Python36". You also need the [GZipped source
-tarball](https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz). This
-provides all the header files we need to reference in our project. Extract the
-Gzipped source tarball to your 'C' directory. You should now have "C:/Python-3.6.0".
+Get Python 3.6.
+[Windows x86-64 executable installer](https://www.python.org/ftp/python/3.6.0/python-3.6.0-amd64.exe).
+Install Python 3.6 to "C:\Python36". This provides all the header files you need
+to reference in our project. It also has the "python36.dll" you will need to
+copy to your project. You also need the [Windows x86-64 embeddable zip file](https://www.python.org/ftp/python/3.6.0/python-3.6.0-embed-amd64.zip). Extract
+the Gzipped source tarball to your 'C' directory. You should now have
+"C:\python-3.6.0-embed-amd64". This has the standard library pre-compiled in a ZIP file.
+The pre-compiled ZIP file can be used to include with your project when you
+ship it.
 
 # Coding
 
@@ -100,11 +103,11 @@ code:
 #endif
 {% endhighlight %}
 
-This gets around Python trying to use debug code even when we use our project.
-Our project only uses the 3.6.0 release version. This tutorial is not for
-compiling Python. We are pulling the header file "Python.h" from the directory
-we just added to "Include Directories." The "Python.h" file has all the `Py_`
-functions we will need for this project.
+This gets around Python trying to use debug code even when you use your project
+in debug mode. Our project only uses the 3.6.0 release version. This tutorial
+is not for compiling Python. We are pulling the header file "Python.h" from the
+directory you just added to "Include Directories." The "Python.h" file has all
+the `Py_` functions you will need for this project.
 
 Now in the function `wWinMain` add:
 
@@ -144,7 +147,7 @@ the user to install Python 3.6. Well, they do not have to. You can include the
 default Python libraries as a ZIP file in your program.
 
 Download "Windows x86 embeddable zip file" this has a python36.zip file inside
-of it that has all the Python libraries pre-compiled. We can make our program
+of it that has all the Python libraries pre-compiled. You can make your program
 use this instead of the files at C:\Python36\Lib. Change the `Py_SetPath`
 to use the zip file. Copy the ZIP file to your project directory. Then make
 the `Py_SetPath` look like this:
@@ -170,8 +173,12 @@ Py_SetPath(L"C:\\Python36\\Lib");
 #endif
 {% endhighlight %}
 
-At this point you should run the project to make sure we got all of our
-settings correct and all of our files in the right place.
+At this point you should run the project to make sure you got all of our
+settings correct and all of our files in the right place. Note the path used if
+the program is not in debug. It will be the file "python36.zip" you must copy
+that file from "C:\python-3.6.0-embed-amd64\python36.zip" to the same directory
+that your executable is. You must also ship the file "python36.zip" with your
+program and the python36.dll in order for it to work on someone else's machine.
 
 Everything should look like this project at this point.
 
@@ -180,13 +187,13 @@ Everything should look like this project at this point.
 # Embedded Python Console
 
 Now you will add code to make Python work like a console. In order to do this
-we will need to do a little Win32 programming. You need a text box to enter
+you will need to do a little Win32 programming. You need a text box to enter
 text for the Python console. You need another text box for the Python results.
 
 ## Input Text Box
 
-Inside `WndProc` we will add the code for the input text box. Inside
-the switch statement we need to add a new case. Add `case WM_CREATE:` just
+Inside `WndProc` you will add the code for the input text box. Inside
+the switch statement you need to add a new case. Add `case WM_CREATE:` just
 above `case WM_COMMAND`. Then inside the `case WM_CREATE` add the
 following code:
 
@@ -205,7 +212,7 @@ HWND input_text_box;
 {% endhighlight %}
 
 Now run the program. You will see a text box near the left side of the window.
-Click in it and type. That where we will insert Python code for your Python
+Click in it and type. That is where you will insert Python code for your Python
 Console. Next you will add the output text box.
 
 <p align="center">
@@ -307,7 +314,7 @@ static LRESULT CALLBACK InputBoxProc(HWND hDlg, UINT message, WPARAM wParam,
 
 Inside the above code do you see the call to statement
 `SetWindowText(g_input_window, L"");`? This sets the window text of your
-edit box. In order for this to work we need to make the input box a global
+edit box. In order for this to work you need to make the input box a global
 variable. Move the code
 
 {% highlight cpp %}
@@ -428,7 +435,7 @@ char g_python_input[200];
 {% endhighlight %}
 
 In the `InputBoxProc` you need to uncomment the two lines that were
-commented out when we first wrote code there. One writes the text from the
+commented out when you first wrote code there. One writes the text from the
 input box to our global Python input variable. The other line sets the event
 that you use to tell the thread new input is available.
 
@@ -449,7 +456,7 @@ if (strcmp(g_python_input, "") == 0)
 {% endhighlight %}
 
 For the above code to work the output box needs to be a global variable so that
-we have easy access to it. Make the output box global by removing it from the
+you have easy access to it. Make the output box global by removing it from the
 top of `WndProc` and putting it next to the `input_text_box`. This is
 the line you are looking for...
 
@@ -459,7 +466,7 @@ HWND output_text_box;
 
 Hopefully this section wasn't like [drawing a
 horse](https://twitter.com/ossia/status/588389121053200385/photo/1). If it was,
-let me know. It was a big step though in getting the infrastructure we need to
+let me know. It was a big step though in getting the infrastructure you need to
 handle input and not break the GUI thread. If you entered everything correctly
 then hitting enter in the input box should make a `>>>` show up in the output
 box. Here is the code up to this point.
@@ -581,7 +588,7 @@ Traceback (most recent call last):
 NameError: name 'z' is not defined
 {% endhighlight %}
 
-This means we have our embedded Python console set up correctly. The code at
+This means you have our embedded Python console set up correctly. The code at
 this point is [EmbeddedingPythonTutorial_Part4.zip](https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial_Part4.zip).
 
 # Adding a Python Module
