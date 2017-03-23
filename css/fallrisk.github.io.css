@@ -214,6 +214,9 @@
 @media screen and (min-width: 800px) {
 
   /* Layout */
+    p {
+      padding-bottom: 16px;
+    }
 
     pre,
     code {
@@ -263,5 +266,9 @@
     @bottom-right {
       content: "Page " counter(page) " of " counter(pages);
     }
+  }
+
+  p {
+    padding-bottom: 16px;
   }
 }

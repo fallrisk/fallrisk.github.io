@@ -13,12 +13,12 @@ show you how to make such a module and add it to your embedded Python console.
 
 # Setup
 
-Get [Visual Studio 15 Express for Desktop](https://www.visualstudio.com/post-download-vs/?sku=xdesk&clcid=0x409&telem=ga#) from Miscrosoft's website.
-
-Get [7-Zip](http://www.7-zip.org/download.html) for compressed file needs.
-Get Python 3.6. [Windows x86-64 executable installer](https://www.python.org/ftp/python/3.6.0/python-3.6.0-amd64.exe). Install Python 3.6 to "C:\Python36".
-
-You also need the [GZipped source
+Get [Visual Studio 15 Express for Desktop](https://www.visualstudio.com/post-
+download-vs/?sku=xdesk&clcid=0x409&telem=ga#) from Microsoft's website. Get
+[7-Zip](http://www.7-zip.org/download.html) for extracting compressed files.
+Get Python 3.6. [Windows x86-64 executable
+installer](https://www.python.org/ftp/python/3.6.0/python-3.6.0-amd64.exe).
+Install Python 3.6 to "C:\Python36". You also need the [GZipped source
 tarball](https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz). This
 provides all the header files we need to reference in our project. Extract the
 Gzipped source tarball to your 'C' directory. You should now have "C:/Python-3.6.0".
@@ -457,7 +457,7 @@ Hopefully this section wasn't like [drawing a
 horse](https://twitter.com/ossia/status/588389121053200385/photo/1). If it was,
 let me know. It was a big step though in getting the infrastructure we need to
 handle input and not break the GUI thread. If you entered everything correctly
-then hittin enter in the input box should make a '>>>' show up in the output
+then hitting enter in the input box should make a `>>>` show up in the output
 box. Here is the code up to this point.
 
 [EmbeddedingPythonTutorial_Part3.zip](https://s3-us-west-1.amazonaws.com/fallrisk.de/justinwatson.name/EmbeddingPythonTutorial_Part3.zip)
