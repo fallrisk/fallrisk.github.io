@@ -491,7 +491,7 @@ above the while loop.
 // https://www.google.com/search?q=PyRun_String+statement
 // http://bytes.com/topic/python/answers/31464-better-way-executing-expression-statement-c
 PyRun_SimpleString("import sys");
-PyRun_SimpleString("import __main__, traceback, superserial");
+PyRun_SimpleString("import __main__, traceback");
 PyRun_SimpleString("def my_displayhook(o): __main__.__result=o");
 PyRun_SimpleString("def my_excepthook(t,v,b): x=traceback.format_exception(t,v,b); __main__.__traceback=x[0]+x[1]+x[2]");
 PyRun_SimpleString("sys.displayhook = my_displayhook");
@@ -682,7 +682,7 @@ PyObject* PyInit_awesome(void)
     if (m == NULL)
         return NULL;
 
-    // Add the SuperSerialError exception.
+    // Add the "awesome" exception.
     AwesomeError = PyErr_NewException("awesome.error", NULL, NULL);
     Py_INCREF(AwesomeError);
     PyModule_AddObject(m, "error", AwesomeError);
