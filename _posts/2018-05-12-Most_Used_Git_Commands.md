@@ -76,3 +76,9 @@ forget the quotes! The `apply` command will leave the changes in your stash
 still so you could apply it to other branches or just be saving it. If you
 want to apply and delete execute `git stash pop "stash{N}"`. If you want to
 just delete the stashed changes execute `stash drop "stash{N}"`.
+
+# Local Repository
+
+{% highlight shell %}
+$ git init --bare ~/Dropbox/git/repository-name.git
+{% endhighlight %}
